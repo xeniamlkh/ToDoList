@@ -1,6 +1,8 @@
 # What is To Do List App?
 To Do List is **a study project** in Kotlin for Android devices. Please be aware that this project was made for **learning purposes** only and will not be updated or supported further.
 This README file has two paragraphs:
+1) [Description](https://github.com/xeniamlkh/ToDoList?tab=readme-ov-file#general)
+2) [What was used in this project?](https://github.com/xeniamlkh/ToDoList?tab=readme-ov-file#what-was-used-in-this-project)
 
 ## Description
 ### General
