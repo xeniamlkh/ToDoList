@@ -92,7 +92,7 @@ The further technical description aims to show the structure of the study projec
   <img src="https://github.com/xeniamlkh/ToDoList/assets/89986215/d2314fab-fda9-4f9f-8043-aa2cd726e896" width="286" height="626">
 
 &nbsp;
-* If there are no finished tasks, the “No finished tasks” snackbar is shown. If there are unfinished tasks, “All work is done! No unfinished tasks” snackbar is shown.
+* If there are no finished tasks, the “No finished tasks” snackbar is shown. If there are no unfinished tasks, “All work is done! No unfinished tasks” snackbar is shown.
 
   <img src="https://github.com/xeniamlkh/ToDoList/assets/89986215/8dfdb125-7af1-4ed4-b471-b94e843e605b" width="293" height="628">
   <img src="https://github.com/xeniamlkh/ToDoList/assets/89986215/c93df55a-ed39-4209-8247-5a687f8a9eab" width="287" height="627">
