@@ -1,19 +1,53 @@
-# What is To Do List App?
-To Do List is **a study project** in Kotlin for Android devices. Please be aware that this project was made for **learning purposes** only and will not be updated or supported further.
-This README file has two paragraphs:
-1) [Description](https://github.com/xeniamlkh/ToDoList?tab=readme-ov-file#general)
-2) [What was used in this project?](https://github.com/xeniamlkh/ToDoList?tab=readme-ov-file#what-was-used-in-this-project)
+# To Do List Application
 
 ## Description
-### General
+The To Do List App is the application that can create to-do notes and track a user's functionality. Additionally, it provides weather conditions based on the current location.
+
+## Key Features
+The To Do List Application contains the following functionality:
+1) Convenient note management
+2) Location-based real-time weather updates
+3) Tracking execution of the tasks
+
+minSdk = 27, targetSdk = 34. The To Do List app supports platform 8.1 (Oreo) and above.
+
+## Technologies Used
+* Android Architecture: UI, Model
+* Room database
+* Repositories for a Room database and Network connection
+* Retrofit
+* Multiple Runtime Location Permissions request through Permission Launcher and register Activity for Result
+* Internet permission
+* Permission Rationale
+* Android Location Manager API
+* Openweathermap API key proper storing in a file that has been added to gitignore
+* ViewModel
+* LiveData
+* RecyclerView with click-action interfaces
+* View Bindings
+* Date Picker
+* Fragment Manager for shifting between fragments
+* OnBackPressedDispatcher for handling the Back button events
+* Nested Fragments
+* SavedInstanceState for saving data through screen rotation
+* Popup menu
+* AlertDialog
+* Flow
+* Coroutines
+* Guidlines
+* Constraint Layout
+* Styles and Themes
+* Loading Progress Bar
+* Snackbars
+* Landscape view
+
+## Detailed Description
 To Do List App’s function is to create **to-do notes** and track your functionality.
 
 On the calendar, you can move back and forth, choose a date, and create a to-do note for that date. When you finish a task, you can mark a note with a check mark in the checkbox near the note.
 Additionally, you can display all unfinished tasks and mark them as finished, or display all finished tasks and delete them forever.
 
 Moreover, the app shows **today’s weather** in the top-right corner of the screen. Knowing the current weather can help you plan your activities for the day, and don't forget to bring an umbrella or use sunscreen. To see the weather, it is required to allow the app to use your **location**.
-### Technical
-The further technical description aims to show the structure of the study project, its functionality, and what instruments have been implemented.
 
 * When the app starts for the first time, it shows a **permission request** for the user's current location.
   
@@ -116,36 +150,3 @@ The further technical description aims to show the structure of the study projec
 * The To Do List app supports **back-button navigation** and **screen rotation**.
 
   <img src="https://github.com/xeniamlkh/ToDoList/assets/89986215/4487d9b5-dd4b-4d30-af24-54b2060d1528" width="1135" height="560">
-
-&nbsp;
-* **minSdk = 27**; **targetSdk = 34**. The To Do LIst app supports platform 8.1 (Oreo) and above.
-
-## What was used in this project?
-* Android Architecture: UI, Model
-* Room database
-* Repositories for a Room database and Network connection
-* Retrofit
-* Multiple Runtime Location Permissions request through Permission Launcher and register Activity for Result
-* Internet permission
-* Permission Rationale
-* Android Location Manager API
-* Openweathermap API key proper storing in a file that has been added to gitignore
-* ViewModel
-* LiveData
-* RecyclerView with click-action interfaces
-* View Bindings
-* Date Picker
-* Fragment Manager for shifting between fragments
-* OnBackPressedDispatcher for handling the Back button events
-* Nested Fragments
-* SavedInstanceState for saving data through screen rotation
-* Popup menu
-* AlertDialog
-* Flow
-* Coroutines
-* Guidlines
-* Constraint Layout
-* Styles and Themes
-* Loading Progress Bar
-* Snackbars
-* Landscape view
