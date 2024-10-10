@@ -16,8 +16,8 @@ import com.example.todolist.ui.alertdialogs.PermissionRationaleDialog
 import com.example.todolist.ui.alertdialogs.PermissionRationaleDialogListener
 import com.example.todolist.ui.fragments.TodayFragment
 import com.example.todolist.ui.utils.LocationHelper
-import com.example.todolist.ui.viewmodel.ToDoListViewModel
-import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
+import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVM
+import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVMFactory
 
 private const val FRAGMENT_TAG = "todayFragment"
 
@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     private lateinit var fragment: TodayFragment
     private lateinit var locationHelper: LocationHelper
 
-    private val viewModel: ToDoListViewModel by viewModels {
-        ToDoListViewModelFactory(
+    private val viewModel: GetWeatherSaveNoteVM by viewModels {
+        GetWeatherSaveNoteVMFactory(
             (application as ToDoListApplication).repository
         )
     }

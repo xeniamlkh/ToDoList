@@ -9,8 +9,9 @@ import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
 import com.example.todolist.databinding.FragmentTodayBinding
 import com.example.todolist.ui.utils.getTodayDate
-import com.example.todolist.ui.viewmodel.ToDoListViewModel
-import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
+import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVM
+import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVMFactory
+
 import kotlin.math.roundToInt
 
 class TodayFragment : BaseFragment<FragmentTodayBinding>() {
@@ -19,8 +20,8 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     private var unfinishedTasks: Boolean = false
     private var actualDate: String? = null
 
-    private val viewModel: ToDoListViewModel by activityViewModels {
-        ToDoListViewModelFactory(
+    private val viewModel: GetWeatherSaveNoteVM by activityViewModels {
+        GetWeatherSaveNoteVMFactory(
             (activity?.application as ToDoListApplication).repository
         )
     }

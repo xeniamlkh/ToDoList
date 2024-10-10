@@ -16,8 +16,8 @@ import com.example.todolist.databinding.FragmentNotesListBinding
 import com.example.todolist.ui.alertdialogs.DeleteNoteAlertDialog
 import com.example.todolist.ui.recyclerview.NotesRecyclerViewAdapter
 import com.example.todolist.ui.recyclerview.RecyclerViewItemClickListener
-import com.example.todolist.ui.viewmodel.ToDoListViewModel
-import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
+import com.example.todolist.ui.viewmodel.NotesListVM
+import com.example.todolist.ui.viewmodel.NotesListVMFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 
@@ -33,8 +33,8 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
 
     private lateinit var adapter: NotesRecyclerViewAdapter
 
-    private val viewModel: ToDoListViewModel by activityViewModels {
-        ToDoListViewModelFactory(
+    private val viewModel: NotesListVM by activityViewModels {
+        NotesListVMFactory(
             (activity?.application as ToDoListApplication).repository
         )
     }
