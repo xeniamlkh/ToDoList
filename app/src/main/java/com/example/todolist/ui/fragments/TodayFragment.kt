@@ -9,10 +9,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
 import com.example.todolist.databinding.FragmentTodayBinding
+import com.example.todolist.ui.utils.getTodayDate
 import com.example.todolist.ui.viewmodel.ToDoListViewModel
 import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.math.roundToInt
 
 class TodayFragment : Fragment() {
@@ -50,8 +49,8 @@ class TodayFragment : Fragment() {
             unfinishedTasks = savedInstanceState.getBoolean("unfinishedTasks")
 
         } else {
-            val simpleTodayDate = SimpleDateFormat("d MMM yyyy, EEEE", Locale.getDefault())
-            val todayDate: String = simpleTodayDate.format(System.currentTimeMillis())
+            val todayDate = requireContext().getTodayDate()
+
             binding.todayDate.text = todayDate
             updateNotesList(todayDate, byDateCond = true, finishedCond = false)
         }
@@ -88,7 +87,11 @@ class TodayFragment : Fragment() {
                     binding.todayDate.text.toString(), false,
                     binding.inputText.text.toString()
                 )
-                updateNotesList(binding.todayDate.text.toString(), byDateCond = true, finishedCond = false)
+                updateNotesList(
+                    binding.todayDate.text.toString(),
+                    byDateCond = true,
+                    finishedCond = false
+                )
             }
             binding.inputText.text?.clear()
         }
