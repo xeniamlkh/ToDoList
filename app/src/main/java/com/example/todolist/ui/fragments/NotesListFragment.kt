@@ -2,7 +2,6 @@ package com.example.todolist.ui.fragments
 
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -26,22 +25,19 @@ private const val ARG_DATE_PARAM = "date"
 private const val ARG_BY_DATE_PARAM = "checkboxStatus"
 private const val ARG_FINISHED_FLAG_PARAM = "flag"
 
-class NotesListFragment : Fragment(), RecyclerViewItemClickListener {
+class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerViewItemClickListener {
 
     private var dateParam: String? = null
     private var byDate: Boolean? = null
     private var finished: Boolean? = null
 
-    private var _binding: FragmentNotesListBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var adapter: NotesRecyclerViewAdapter
 
     private val viewModel: ToDoListViewModel by activityViewModels {
         ToDoListViewModelFactory(
             (activity?.application as ToDoListApplication).repository
         )
     }
-
-        private lateinit var adapter: NotesRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +48,11 @@ class NotesListFragment : Fragment(), RecyclerViewItemClickListener {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNotesListBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentNotesListBinding {
+        return FragmentNotesListBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -168,10 +163,5 @@ class NotesListFragment : Fragment(), RecyclerViewItemClickListener {
 
     override fun checkboxClick(noteId: Int, checkboxStatus: Boolean) {
         viewModel.updateNoteStatus(noteId, checkboxStatus)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

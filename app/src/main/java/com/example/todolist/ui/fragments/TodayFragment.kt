@@ -1,7 +1,6 @@
 package com.example.todolist.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,7 @@ import com.example.todolist.ui.viewmodel.ToDoListViewModel
 import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
 import kotlin.math.roundToInt
 
-class TodayFragment : Fragment() {
-
-    private var _binding: FragmentTodayBinding? = null
-    private val binding get() = _binding!!
+class TodayFragment : BaseFragment<FragmentTodayBinding>() {
 
     private var finishedTasks: Boolean = false
     private var unfinishedTasks: Boolean = false
@@ -29,12 +25,11 @@ class TodayFragment : Fragment() {
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentTodayBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentTodayBinding {
+        return FragmentTodayBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -176,10 +171,4 @@ class TodayFragment : Fragment() {
         outState.putBoolean("finishedTasks", finishedTasks)
         outState.putBoolean("unfinishedTasks", unfinishedTasks)
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 }

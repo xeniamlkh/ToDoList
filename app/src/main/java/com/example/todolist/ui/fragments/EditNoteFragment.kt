@@ -1,7 +1,6 @@
 package com.example.todolist.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +19,7 @@ import com.google.android.material.textfield.TextInputLayout
 private const val ARG_PARAM_NOTE_ID = "noteId"
 private const val ARG_PARAM_NOTE_STRING = "noteString"
 
-class EditNoteFragment : Fragment() {
-
-    private var _binding: FragmentEditNoteBinding? = null
-    private val binding get() = _binding!!
+class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -64,12 +60,11 @@ class EditNoteFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentEditNoteBinding {
+        return FragmentEditNoteBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -138,11 +133,6 @@ class EditNoteFragment : Fragment() {
                     putString(ARG_PARAM_NOTE_STRING, noteString)
                 }
             }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onDestroy() {
