@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
 import com.example.todolist.databinding.FragmentTodayBinding
 import com.example.todolist.ui.utils.getTodayDate
 import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVM
 import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVMFactory
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import kotlin.math.roundToInt
 
@@ -36,6 +39,21 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(5000)
+            binding.apply {
+                loadingProgressBar.visibility = View.GONE
+                goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+                goodDayIcon.visibility = View.VISIBLE
+                weatherIcon.visibility = View.GONE
+                cityName.visibility = View.GONE
+                temperature.visibility = View.GONE
+                condition.visibility = View.GONE
+                quote.text = resources.getString(R.string.have_a_nice_day)
+                quote.visibility = View.VISIBLE
+            }
+        }
+
         if (savedInstanceState != null) {
             val savedDate = savedInstanceState.getString("currentDate")
             actualDate = savedDate
@@ -46,7 +64,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
 
         } else {
             val todayDate = requireContext().getTodayDate()
-
             binding.todayDate.text = todayDate
             updateNotesList(todayDate, byDateCond = true, finishedCond = false)
         }
@@ -61,6 +78,56 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             } else {
                 if (!finishedTasks && !unfinishedTasks) {
                     updateNotesList(calendarDate, byDateCond = true, finishedCond = false)
+                }
+            }
+        }
+
+        viewModel.weatherData.observe(this.viewLifecycleOwner) { weatherData ->
+            if (weatherData != null && weatherData.name.isNotEmpty()) {
+                binding.loadingProgressBar.visibility = View.GONE
+                val weatherConditions = weatherData.weather[0].main
+                when (weatherConditions) {
+                    "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
+                    "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
+                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
+                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
+                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
+                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
+                    else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
+                }
+
+                binding.cityName.text = weatherData.name
+                val temperature = weatherData.main.temp.roundToInt()
+
+                val stringBuilder = StringBuilder()
+                stringBuilder.append(temperature.toString()).append(" \u2103")
+                binding.temperature.text = stringBuilder.toString()
+
+                binding.condition.text = weatherData.weather[0].main
+            }
+        }
+
+        viewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->
+            if (quoteStatus) {
+                binding.apply {
+                    loadingProgressBar.visibility = View.GONE
+                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+                    goodDayIcon.visibility = View.VISIBLE
+                    weatherIcon.visibility = View.GONE
+                    cityName.visibility = View.GONE
+                    temperature.visibility = View.GONE
+                    condition.visibility = View.GONE
+                    quote.text = resources.getString(R.string.have_a_nice_day)
+                    quote.visibility = View.VISIBLE
+                }
+            } else {
+                binding.apply {
+                    weatherIcon.visibility = View.VISIBLE
+                    cityName.visibility = View.VISIBLE
+                    temperature.visibility = View.VISIBLE
+                    condition.visibility = View.VISIBLE
+                    quote.visibility = View.GONE
+                    goodDayIcon.visibility = View.GONE
                 }
             }
         }
@@ -104,56 +171,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             finishedTasks = false
             binding.warningNoteRequired.visibility = View.GONE
             updateNotesList(date = "00 May 0000, Sunday", byDateCond = false, finishedCond = false)
-        }
-
-        viewModel.weatherData.observe(this.viewLifecycleOwner) { weatherData ->
-            if (weatherData != null && weatherData.name.isNotEmpty()) {
-                binding.loadingProgressBar.visibility = View.GONE
-                val weatherConditions = weatherData.weather[0].main
-                when (weatherConditions) {
-                    "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
-                    "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
-                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
-                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
-                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
-                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
-                    else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
-                }
-
-                binding.cityName.text = weatherData.name
-                val temperature = weatherData.main.temp.roundToInt()
-
-                val stringBuilder = StringBuilder()
-                stringBuilder.append(temperature.toString()).append(" \u2103")
-                binding.temperature.text = stringBuilder.toString()
-
-                binding.condition.text = weatherData.weather[0].main
-            }
-        }
-
-        viewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->
-            if (quoteStatus) {
-                binding.apply {
-                    binding.loadingProgressBar.visibility = View.GONE
-                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
-                    goodDayIcon.visibility = View.VISIBLE
-                    weatherIcon.visibility = View.GONE
-                    cityName.visibility = View.GONE
-                    temperature.visibility = View.GONE
-                    condition.visibility = View.GONE
-                    quote.text = resources.getString(R.string.have_a_nice_day)
-                    quote.visibility = View.VISIBLE
-                }
-            } else {
-                binding.apply {
-                    weatherIcon.visibility = View.VISIBLE
-                    cityName.visibility = View.VISIBLE
-                    temperature.visibility = View.VISIBLE
-                    condition.visibility = View.VISIBLE
-                    quote.visibility = View.GONE
-                    goodDayIcon.visibility = View.GONE
-                }
-            }
         }
     }
 
