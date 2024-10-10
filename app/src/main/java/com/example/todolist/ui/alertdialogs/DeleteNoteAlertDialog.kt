@@ -7,16 +7,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
-import com.example.todolist.ui.viewmodel.ToDoListViewModel
-import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
+import com.example.todolist.ui.viewmodel.EditDeleteNoteVM
+import com.example.todolist.ui.viewmodel.EditDeleteNoteVMFactory
 import com.google.android.material.snackbar.Snackbar
 
 private const val ARG_PARAM_NOTE_ID = "noteId"
 
 class DeleteNoteAlertDialog : DialogFragment() {
 
-    private val viewModel: ToDoListViewModel by activityViewModels {
-        ToDoListViewModelFactory(
+    private val viewModel: EditDeleteNoteVM by activityViewModels {
+        EditDeleteNoteVMFactory(
             (activity?.application as ToDoListApplication).repository
         )
     }

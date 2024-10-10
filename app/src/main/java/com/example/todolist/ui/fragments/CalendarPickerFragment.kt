@@ -9,15 +9,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
-import com.example.todolist.ui.viewmodel.ToDoListViewModel
-import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
+import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVM
+import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVMFactory
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class   CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val viewModel: ToDoListViewModel by activityViewModels {
-        ToDoListViewModelFactory(
+    private val viewModel: GetWeatherSaveNoteVM by activityViewModels {
+        GetWeatherSaveNoteVMFactory(
             (activity?.application as ToDoListApplication).repository
         )
     }
