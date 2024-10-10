@@ -1,4 +1,4 @@
-package com.example.todolist.ui.ui
+package com.example.todolist.ui.fragments
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -14,7 +14,7 @@ import com.example.todolist.ui.viewmodel.ToDoListViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class   CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private val viewModel: ToDoListViewModel by activityViewModels {
         ToDoListViewModelFactory(

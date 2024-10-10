@@ -1,4 +1,4 @@
-package com.example.todolist.ui.ui
+package com.example.todolist.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -67,7 +67,7 @@ class EditNoteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEditNoteBinding.inflate(inflater, container, false)
         return binding.root
     }

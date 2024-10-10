@@ -1,4 +1,4 @@
-package com.example.todolist.ui.ui
+package com.example.todolist.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -33,7 +33,7 @@ class TodayFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTodayBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -110,26 +110,26 @@ class TodayFragment : Fragment() {
         viewModel.weatherData.observe(this.viewLifecycleOwner) { weatherData ->
             if (weatherData != null && weatherData.name.isNotEmpty()) {
                 binding.loadingProgressBar.visibility = View.GONE
+                val weatherConditions = weatherData.weather[0].main
+                when (weatherConditions) {
+                    "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
+                    "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
+                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
+                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
+                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
+                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
+                    else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
+                }
+
+                binding.cityName.text = weatherData.name
+                val temperature = weatherData.main.temp.roundToInt()
+
+                val stringBuilder = StringBuilder()
+                stringBuilder.append(temperature.toString()).append(" \u2103")
+                binding.temperature.text = stringBuilder.toString()
+
+                binding.condition.text = weatherData.weather[0].main
             }
-            val weatherConditions = weatherData.weather[0].main
-            when (weatherConditions) {
-                "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
-                "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
-                "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
-                "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
-                "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
-                "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
-                else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
-            }
-
-            binding.cityName.text = weatherData.name
-
-            val temperature = weatherData.main.temp.roundToInt()
-            val stringBuilder = StringBuilder()
-            stringBuilder.append(temperature.toString()).append(" \u2103")
-            binding.temperature.text = stringBuilder.toString()
-
-            binding.condition.text = weatherData.weather[0].main
         }
 
         viewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->

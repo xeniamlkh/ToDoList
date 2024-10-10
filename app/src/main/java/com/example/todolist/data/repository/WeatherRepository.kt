@@ -1,8 +1,8 @@
-package com.example.todolist.model.repository
+package com.example.todolist.data.repository
 
-import com.example.todolist.model.network.WeatherApiClient
-import com.example.todolist.model.network.WeatherApiService
-import com.example.todolist.model.network.WeatherData
+import com.example.todolist.data.network.WeatherApiClient
+import com.example.todolist.data.network.WeatherApiService
+import com.example.todolist.data.network.WeatherData
 
 class WeatherRepository {
 

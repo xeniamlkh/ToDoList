@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.databinding.NoteItemBinding
-import com.example.todolist.model.data.ToDoListEntity
+import com.example.todolist.data.room.ToDoListEntity
 
 interface RecyclerViewItemClickListener {
     fun onMenuClick(menuItem: View, noteId: Int, noteText: String)

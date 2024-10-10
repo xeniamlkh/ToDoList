@@ -1,7 +1,7 @@
-package com.example.todolist.model.repository
+package com.example.todolist.data.repository
 
-import com.example.todolist.model.data.ToDoListDao
-import com.example.todolist.model.data.ToDoListEntity
+import com.example.todolist.data.room.ToDoListDao
+import com.example.todolist.data.room.ToDoListEntity
 import kotlinx.coroutines.flow.Flow
 
 class ToDoListRepository(private val notesDao: ToDoListDao) {

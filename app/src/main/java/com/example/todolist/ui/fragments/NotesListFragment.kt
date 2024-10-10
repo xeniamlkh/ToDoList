@@ -1,4 +1,4 @@
-package com.example.todolist.ui.ui
+package com.example.todolist.ui.fragments
 
 import android.os.Build
 import android.os.Bundle
@@ -41,7 +41,7 @@ class NotesListFragment : Fragment(), RecyclerViewItemClickListener {
         )
     }
 
-    private lateinit var adapter: NotesRecyclerViewAdapter
+        private lateinit var adapter: NotesRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class NotesListFragment : Fragment(), RecyclerViewItemClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentNotesListBinding.inflate(inflater, container, false)
         return binding.root
     }

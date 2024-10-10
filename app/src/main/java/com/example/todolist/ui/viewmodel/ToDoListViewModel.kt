@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todolist.BuildConfig
-import com.example.todolist.model.data.ToDoListEntity
-import com.example.todolist.model.network.WeatherData
-import com.example.todolist.model.repository.ToDoListRepository
-import com.example.todolist.model.repository.WeatherRepository
+import com.example.todolist.data.room.ToDoListEntity
+import com.example.todolist.data.network.WeatherData
+import com.example.todolist.data.repository.ToDoListRepository
+import com.example.todolist.data.repository.WeatherRepository
 import kotlinx.coroutines.launch
 
 class ToDoListViewModel(private val repository: ToDoListRepository) : ViewModel() {
