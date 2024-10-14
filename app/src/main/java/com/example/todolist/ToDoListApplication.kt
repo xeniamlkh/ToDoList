@@ -6,5 +6,7 @@ import com.example.todolist.data.repository.ToDoListRepository
 
 class ToDoListApplication : Application() {
     val database: ToDoListDatabase by lazy { ToDoListDatabase.getDatabase(this) }
-    val repository: ToDoListRepository by lazy { ToDoListRepository(database.notesDao()) }
+    val repository: ToDoListRepository by lazy {
+        ToDoListRepository(database.notesDao(), database.weatherDao())
+    }
 }

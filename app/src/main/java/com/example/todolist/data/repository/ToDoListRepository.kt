@@ -2,9 +2,12 @@ package com.example.todolist.data.repository
 
 import com.example.todolist.data.room.ToDoListDao
 import com.example.todolist.data.room.ToDoListEntity
+import com.example.todolist.data.room.WeatherDao
+import com.example.todolist.data.room.WeatherEntity
 import kotlinx.coroutines.flow.Flow
 
-class ToDoListRepository(private val notesDao: ToDoListDao) {
+//TODO separate (?) this into two repositories: one for notes, another for weather cache
+class ToDoListRepository(private val notesDao: ToDoListDao, private val weatherDao: WeatherDao) {
 
     suspend fun insertNote(note: ToDoListEntity) {
         notesDao.insertNote(note)
@@ -38,4 +41,33 @@ class ToDoListRepository(private val notesDao: ToDoListDao) {
         notesDao.deleteAllFinishedTasks()
     }
 
+    suspend fun writeWeatherDataCache(weatherEntity: WeatherEntity) {
+        weatherDao.writeWeatherDataCache(weatherEntity)
+    }
+
+    suspend fun deleteWeatherDataCache(weatherEntityId: Int) {
+        weatherDao.deleteWeatherDataCache(weatherEntityId)
+    }
+
+    fun getWeatherDataCache(): Flow<WeatherEntity> {
+        return weatherDao.getWeatherDataCache()
+    }
+
+    suspend fun updateWeatherDataCacheById(
+        lat: String,
+        lon: String,
+        weatherEntityId: Int,
+        cityName: String,
+        weather: String,
+        temperature: Int
+    ) {
+        weatherDao.updateWeatherDataCacheById(
+            lat,
+            lon,
+            weatherEntityId,
+            cityName,
+            weather,
+            temperature
+        )
+    }
 }
