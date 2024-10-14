@@ -12,9 +12,6 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun writeWeatherDataCache(weatherEntity: WeatherEntity)
 
-    @Query("DELETE FROM weather_data WHERE id = :weatherEntityId")
-    suspend fun deleteWeatherDataCache(weatherEntityId: Int)
-
     @Query("SELECT * FROM weather_data")
     fun getWeatherDataCache(): Flow<WeatherEntity>
 

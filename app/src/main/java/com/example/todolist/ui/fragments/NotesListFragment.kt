@@ -35,7 +35,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
 
     private val viewModel: NotesListVM by activityViewModels {
         NotesListVMFactory(
-            (activity?.application as ToDoListApplication).repository
+            (activity?.application as ToDoListApplication).toDoListRepository
         )
     }
 

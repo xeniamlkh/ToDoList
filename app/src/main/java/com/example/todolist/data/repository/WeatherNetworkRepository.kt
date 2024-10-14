@@ -4,7 +4,7 @@ import com.example.todolist.data.network.WeatherApiClient
 import com.example.todolist.data.network.WeatherApiService
 import com.example.todolist.data.network.WeatherData
 
-class WeatherRepository {
+class WeatherNetworkRepository {
 
     private val weatherApiService: WeatherApiService =
         WeatherApiClient.retrofit.create(WeatherApiService::class.java)

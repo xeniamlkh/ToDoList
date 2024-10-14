@@ -16,8 +16,8 @@ import com.example.todolist.ui.alertdialogs.PermissionRationaleDialog
 import com.example.todolist.ui.alertdialogs.PermissionRationaleDialogListener
 import com.example.todolist.ui.fragments.TodayFragment
 import com.example.todolist.ui.utils.LocationHelper
-import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVM
-import com.example.todolist.ui.viewmodel.GetWeatherSaveNoteVMFactory
+import com.example.todolist.ui.viewmodel.GetWeatherVM
+import com.example.todolist.ui.viewmodel.GetWeatherVMFactory
 
 private const val FRAGMENT_TAG = "todayFragment"
 
@@ -27,10 +27,8 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     private lateinit var fragment: TodayFragment
     private lateinit var locationHelper: LocationHelper
 
-    private val viewModel: GetWeatherSaveNoteVM by viewModels {
-        GetWeatherSaveNoteVMFactory(
-            (application as ToDoListApplication).repository
-        )
+    private val weatherViewModel: GetWeatherVM by viewModels {
+        GetWeatherVMFactory((application as ToDoListApplication).weatherCacheRepository)
     }
 
     private val requestPermissionLauncher =
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     }
 
     private fun loadQuote() {
-        viewModel.showQuote(true)
+        weatherViewModel.showQuote(true)
     }
 
     override fun callPermissionLauncher() {
@@ -151,7 +149,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
         val latitude = location.latitude.toString()
         val longitude = location.longitude.toString()
 
-        viewModel.getCurrentWeather(latitude, longitude)
-        viewModel.showQuote(false)
+        weatherViewModel.getCurrentWeather(latitude, longitude)
+        weatherViewModel.showQuote(false)
     }
 }

@@ -25,7 +25,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
 
     private val viewModel: EditDeleteNoteVM by activityViewModels {
         EditDeleteNoteVMFactory(
-            (activity?.application as ToDoListApplication).repository
+            (activity?.application as ToDoListApplication).toDoListRepository
         )
     }
 
