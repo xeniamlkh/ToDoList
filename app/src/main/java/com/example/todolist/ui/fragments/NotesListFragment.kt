@@ -12,9 +12,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
+import com.example.todolist.data.room.ToDoListEntity
 import com.example.todolist.databinding.FragmentNotesListBinding
 import com.example.todolist.ui.alertdialogs.DeleteNoteAlertDialog
-import com.example.todolist.ui.recyclerview.NotesRecyclerViewAdapter
+import com.example.todolist.ui.recyclerview.NotesAdapter
 import com.example.todolist.ui.recyclerview.RecyclerViewItemClickListener
 import com.example.todolist.ui.viewmodel.NotesListVM
 import com.example.todolist.ui.viewmodel.NotesListVMFactory
@@ -31,7 +32,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
     private var byDate: Boolean? = null
     private var finished: Boolean? = null
 
-    private lateinit var adapter: NotesRecyclerViewAdapter
+    private lateinit var adapter: NotesAdapter
 
     private val viewModel: NotesListVM by activityViewModels {
         NotesListVMFactory(
@@ -61,15 +62,12 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
         if (byDate == true) {
             viewModel.getListOfNotesByDate(dateParam!!)
                 .observe(this.viewLifecycleOwner) { notesList ->
-                    adapter = NotesRecyclerViewAdapter(notesList, this)
-                    binding.todolistRecyclerView.adapter = adapter
+                    createUpdateRecyclerView(notesList)
                 }
         } else {
             if (finished == true) {
                 viewModel.showAllFinishedTasks().observe(this.viewLifecycleOwner) { notesList ->
-                    adapter = NotesRecyclerViewAdapter(notesList, this)
-                    binding.todolistRecyclerView.adapter = adapter
-
+                    createUpdateRecyclerView(notesList)
                     if (notesList.isNotEmpty()) {
                         binding.deleteFloatBtn.visibility = View.VISIBLE
                     } else {
@@ -78,9 +76,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
                 }
             } else {
                 viewModel.showAllUnfinishedTasks().observe(this.viewLifecycleOwner) { notesList ->
-                    adapter = NotesRecyclerViewAdapter(notesList, this)
-                    binding.todolistRecyclerView.adapter = adapter
-
+                    createUpdateRecyclerView(notesList)
                     if (notesList.isEmpty()) {
                         showSnackbar(getString(R.string.all_work_is_done))
                     }
@@ -100,6 +96,12 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
             message, Snackbar.LENGTH_SHORT
         )
             .show()
+    }
+
+    private fun createUpdateRecyclerView(notesList: List<ToDoListEntity>) {
+        adapter = NotesAdapter(this)
+        adapter.submitList(notesList)
+        binding.todolistRecyclerView.adapter = adapter
     }
 
     companion object {
