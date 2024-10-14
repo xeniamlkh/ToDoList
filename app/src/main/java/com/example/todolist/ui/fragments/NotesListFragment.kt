@@ -73,11 +73,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
                     if (notesList.isNotEmpty()) {
                         binding.deleteFloatBtn.visibility = View.VISIBLE
                     } else {
-                        Snackbar.make(
-                            requireActivity().findViewById(android.R.id.content),
-                            getString(R.string.no_finished_tasks), Snackbar.LENGTH_SHORT
-                        )
-                            .show()
+                        showSnackbar(getString(R.string.no_finished_tasks))
                     }
                 }
             } else {
@@ -86,11 +82,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
                     binding.todolistRecyclerView.adapter = adapter
 
                     if (notesList.isEmpty()) {
-                        Snackbar.make(
-                            requireActivity().findViewById(android.R.id.content),
-                            getString(R.string.all_work_is_done), Snackbar.LENGTH_SHORT
-                        )
-                            .show()
+                        showSnackbar(getString(R.string.all_work_is_done))
                     }
                 }
             }
@@ -100,6 +92,14 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
             viewModel.deleteAllFinishedTasks()
             binding.deleteFloatBtn.visibility = View.GONE
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(
+            requireActivity().findViewById(android.R.id.content),
+            message, Snackbar.LENGTH_SHORT
+        )
+            .show()
     }
 
     companion object {

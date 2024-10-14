@@ -84,20 +84,9 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
 
             if (binding.inputText.text.isNullOrEmpty()) {
                 viewModel.deleteNoteById(noteId!!)
-
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    R.string.note_deleted, Snackbar.LENGTH_SHORT
-                )
-                    .show()
+                showSnackbar(getString(R.string.note_deleted))
             } else {
                 viewModel.updateNoteById(noteId!!, binding.inputText.text.toString())
-
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    R.string.note_updated, Snackbar.LENGTH_SHORT
-                )
-                    .show()
             }
 
             requireActivity()
@@ -124,6 +113,18 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
         }
     }
 
+    private fun showSnackbar(message: String) {
+        Snackbar.make(
+            requireActivity().findViewById(android.R.id.content),
+            message, Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        callback.remove()
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(noteId: Int, noteString: String) =
@@ -133,10 +134,5 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
                     putString(ARG_PARAM_NOTE_STRING, noteString)
                 }
             }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        callback.remove()
     }
 }

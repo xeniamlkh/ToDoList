@@ -37,6 +37,5 @@ class CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListe
         val calendarDate: String = simpleCalendarDate.format(date.time)
 
         dateViewModel.setCalendarDate(calendarDate)
-
     }
 }
