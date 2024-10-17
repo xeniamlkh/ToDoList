@@ -1,7 +1,7 @@
 package com.example.todolist.ui.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.todolist.data.room.ToDoListEntity
+import com.example.todolist.data.room.entity.ToDoListEntity
 
 class ToDoListDiffCallback: DiffUtil.ItemCallback<ToDoListEntity>() {
 

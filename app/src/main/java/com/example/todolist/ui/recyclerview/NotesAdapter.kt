@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolist.data.room.ToDoListEntity
+import com.example.todolist.data.room.entity.ToDoListEntity
 import com.example.todolist.databinding.NoteItemBinding
 
 interface RecyclerViewItemClickListener {

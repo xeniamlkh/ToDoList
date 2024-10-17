@@ -1,10 +1,11 @@
 package com.example.todolist.data.repository
 
-import com.example.todolist.data.room.WeatherDao
-import com.example.todolist.data.room.WeatherEntity
+import com.example.todolist.data.room.dao.WeatherDao
+import com.example.todolist.data.room.entity.WeatherEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class WeatherCacheRepository(private val weatherDao: WeatherDao) {
+class WeatherCacheRepository @Inject constructor(private val weatherDao: WeatherDao) {
 
     suspend fun writeWeatherDataCache(weatherEntity: WeatherEntity) {
         weatherDao.writeWeatherDataCache(weatherEntity)

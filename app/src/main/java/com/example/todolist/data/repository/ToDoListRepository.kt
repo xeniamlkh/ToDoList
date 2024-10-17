@@ -1,10 +1,11 @@
 package com.example.todolist.data.repository
 
-import com.example.todolist.data.room.ToDoListDao
-import com.example.todolist.data.room.ToDoListEntity
+import com.example.todolist.data.room.dao.ToDoListDao
+import com.example.todolist.data.room.entity.ToDoListEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ToDoListRepository(private val notesDao: ToDoListDao) {
+class ToDoListRepository @Inject constructor(private val notesDao: ToDoListDao) {
 
     suspend fun insertNote(note: ToDoListEntity) {
         notesDao.insertNote(note)

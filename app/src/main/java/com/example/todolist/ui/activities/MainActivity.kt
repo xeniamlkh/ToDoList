@@ -6,30 +6,31 @@ import android.location.Location
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
+import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.alertdialogs.PermissionRationaleDialog
 import com.example.todolist.ui.alertdialogs.PermissionRationaleDialogListener
 import com.example.todolist.ui.fragments.TodayFragment
 import com.example.todolist.ui.utils.LocationHelper
-import com.example.todolist.ui.viewmodel.GetWeatherVM
-import com.example.todolist.ui.viewmodel.GetWeatherVMFactory
+import com.example.todolist.ui.viewmodel.MainActivityVM
+import javax.inject.Inject
 
 private const val FRAGMENT_TAG = "todayFragment"
 
 class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     LocationHelper.LocationUpdateListener {
 
+    @Inject
+    lateinit var viewModel: MainActivityVM
+
+    private lateinit var activityComponent: ActivityComponent
+
     private lateinit var fragment: TodayFragment
     private lateinit var locationHelper: LocationHelper
-
-    private val weatherViewModel: GetWeatherVM by viewModels {
-        GetWeatherVMFactory((application as ToDoListApplication).weatherCacheRepository)
-    }
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
@@ -49,6 +50,10 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val appComponent = (application as ToDoListApplication).getAppComponent()
+        activityComponent = appComponent.activityComponent().create()
+        activityComponent.injectActivity(this)
 
         locationHelper = LocationHelper(this, this)
 
@@ -129,7 +134,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     }
 
     private fun loadQuote() {
-        weatherViewModel.showQuote(true)
+        viewModel.showQuote(true)
     }
 
     override fun callPermissionLauncher() {
@@ -149,7 +154,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
         val latitude = location.latitude.toString()
         val longitude = location.longitude.toString()
 
-        weatherViewModel.getCurrentWeather(latitude, longitude)
-        weatherViewModel.showQuote(false)
+        viewModel.getCurrentWeather(latitude, longitude)
+        viewModel.showQuote(false)
     }
 }

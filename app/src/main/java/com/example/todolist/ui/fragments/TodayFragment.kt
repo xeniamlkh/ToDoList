@@ -8,37 +8,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.activityViewModels
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
-import com.example.todolist.data.room.WeatherEntity
+import com.example.todolist.data.room.entity.WeatherEntity
 import com.example.todolist.databinding.FragmentTodayBinding
+import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.utils.LocationHelper
 import com.example.todolist.ui.utils.getTodayDate
-import com.example.todolist.ui.viewmodel.DateVM
-import com.example.todolist.ui.viewmodel.GetWeatherVM
-import com.example.todolist.ui.viewmodel.GetWeatherVMFactory
-import com.example.todolist.ui.viewmodel.SaveNoteVM
-import com.example.todolist.ui.viewmodel.SaveNoteVMFactory
+import com.example.todolist.ui.viewmodel.TodayFragmentVM
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
 class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.LocationUpdateListener {
 
+    @Inject
+    lateinit var viewModel: TodayFragmentVM
+
+    private lateinit var activityComponent: ActivityComponent
     private lateinit var locationHelper: LocationHelper
 
     private var finishedTasks: Boolean = false
     private var unfinishedTasks: Boolean = false
     private var actualDate: String? = null
-
-    private val saveNoteViewModel: SaveNoteVM by activityViewModels {
-        SaveNoteVMFactory((activity?.application as ToDoListApplication).toDoListRepository)
-    }
-
-    private val dateViewModel: DateVM by activityViewModels()
-
-    private val weatherViewModel: GetWeatherVM by activityViewModels {
-        GetWeatherVMFactory((activity?.application as ToDoListApplication).weatherCacheRepository)
-    }
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -49,6 +40,10 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val appComponent = (requireActivity().application as ToDoListApplication).getAppComponent()
+        activityComponent = appComponent.activityComponent().create()
+        activityComponent.injectTodayFragment(this)
 
         locationHelper = LocationHelper(requireContext(), this)
         getLocation()
@@ -67,7 +62,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
             updateNotesList(todayDate, byDateCond = true, finishedCond = false)
         }
 
-        dateViewModel.calendarDate.observe(this.viewLifecycleOwner) { calendarDate ->
+        viewModel.calendarDate.observe(this.viewLifecycleOwner) { calendarDate ->
             binding.todayDate.text = calendarDate
 
             if (savedInstanceState != null) {
@@ -81,7 +76,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
             }
         }
 
-        weatherViewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->
+        viewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->
             if (quoteStatus) {
                 binding.apply {
                     loadingProgressBar.visibility = View.GONE
@@ -120,7 +115,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
                 binding.warningNoteRequired.visibility = View.VISIBLE
             } else {
                 binding.warningNoteRequired.visibility = View.GONE
-                saveNoteViewModel.createNote(
+                viewModel.createNote(
                     binding.todayDate.text.toString(), false,
                     binding.inputText.text.toString()
                 )
@@ -174,7 +169,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
         val latitude = location.latitude.toString()
         val longitude = location.longitude.toString()
 
-        weatherViewModel.getWeatherDataCache().observe(this.viewLifecycleOwner) { weatherEntity ->
+        viewModel.getWeatherDataCache().observe(this.viewLifecycleOwner) { weatherEntity ->
             val cachedLat = weatherEntity.lat
             val cachedLon = weatherEntity.lon
 
@@ -187,7 +182,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
     }
 
     private fun getActualWeather() {
-        weatherViewModel.weatherData.observe(this.viewLifecycleOwner) { weatherData ->
+        viewModel.weatherData.observe(this.viewLifecycleOwner) { weatherData ->
             if (weatherData != null) {
                 binding.loadingProgressBar.visibility = View.GONE
 

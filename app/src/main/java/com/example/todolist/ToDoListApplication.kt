@@ -1,17 +1,26 @@
 package com.example.todolist
 
 import android.app.Application
-import com.example.todolist.data.room.ToDoListDatabase
-import com.example.todolist.data.repository.ToDoListRepository
-import com.example.todolist.data.repository.WeatherCacheRepository
+import com.example.todolist.di.component.AppComponent
+import com.example.todolist.di.component.DaggerAppComponent
+import com.example.todolist.di.module.service.NetworkServiceModule
+import com.example.todolist.di.module.service.RoomServiceModule
+
 
 class ToDoListApplication : Application() {
-    val database: ToDoListDatabase by lazy { ToDoListDatabase.getDatabase(this) }
 
-    val toDoListRepository: ToDoListRepository by lazy {
-        ToDoListRepository(database.notesDao())
+    private lateinit var appComponent: AppComponent
+
+    override fun onCreate() {
+        super.onCreate()
+        appComponent = DaggerAppComponent
+            .builder()
+            .roomServiceModule(RoomServiceModule(this))
+            .networkServiceModule(NetworkServiceModule())
+            .build()
     }
-    val weatherCacheRepository: WeatherCacheRepository by lazy {
-        WeatherCacheRepository(database.weatherDao())
+
+    fun getAppComponent(): AppComponent {
+        return appComponent
     }
 }

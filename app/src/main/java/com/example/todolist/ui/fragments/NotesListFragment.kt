@@ -8,19 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.R
 import com.example.todolist.ToDoListApplication
-import com.example.todolist.data.room.ToDoListEntity
+import com.example.todolist.data.room.entity.ToDoListEntity
 import com.example.todolist.databinding.FragmentNotesListBinding
+import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.alertdialogs.DeleteNoteAlertDialog
 import com.example.todolist.ui.recyclerview.NotesAdapter
 import com.example.todolist.ui.recyclerview.RecyclerViewItemClickListener
 import com.example.todolist.ui.viewmodel.NotesListVM
-import com.example.todolist.ui.viewmodel.NotesListVMFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import javax.inject.Inject
 
 private const val ARG_DATE_PARAM = "date"
 private const val ARG_BY_DATE_PARAM = "checkboxStatus"
@@ -28,17 +28,16 @@ private const val ARG_FINISHED_FLAG_PARAM = "flag"
 
 class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerViewItemClickListener {
 
+    @Inject
+    lateinit var viewModel: NotesListVM
+
+    private lateinit var activityComponent: ActivityComponent
+
     private var dateParam: String? = null
     private var byDate: Boolean? = null
     private var finished: Boolean? = null
 
     private lateinit var adapter: NotesAdapter
-
-    private val viewModel: NotesListVM by activityViewModels {
-        NotesListVMFactory(
-            (activity?.application as ToDoListApplication).toDoListRepository
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +57,10 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val appComponent = (requireActivity().application as ToDoListApplication).getAppComponent()
+        activityComponent = appComponent.activityComponent().create()
+        activityComponent.injectNotesListFragment(this)
 
         if (byDate == true) {
             viewModel.getListOfNotesByDate(dateParam!!)

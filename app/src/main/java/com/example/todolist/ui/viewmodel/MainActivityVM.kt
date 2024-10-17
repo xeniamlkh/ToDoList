@@ -1,34 +1,24 @@
 package com.example.todolist.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todolist.BuildConfig
-import com.example.todolist.data.network.WeatherData
 import com.example.todolist.data.repository.WeatherCacheRepository
 import com.example.todolist.data.repository.WeatherNetworkRepository
-import com.example.todolist.data.room.WeatherEntity
+import com.example.todolist.data.room.entity.WeatherEntity
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import dagger.internal.Provider
 import kotlin.math.roundToInt
 
-class GetWeatherVM(private val weatherCacheRepository: WeatherCacheRepository) : ViewModel() {
+class MainActivityVM @Inject constructor(
+    private val weatherCacheRepository: WeatherCacheRepository,
+    private val weatherNetworkRepository: WeatherNetworkRepository
+) : BaseViewModel() {
 
-    private val weatherNetworkRepository = WeatherNetworkRepository()
     private val apiKey = BuildConfig.API_KEY
-
-    private val _quoteStatus = MutableLiveData<Boolean>()
-    val quoteStatus: LiveData<Boolean> get() = _quoteStatus
-
-    private val _weatherData = MutableLiveData<WeatherData>()
-    val weatherData: LiveData<WeatherData> get() = _weatherData
-
-    fun showQuote(value: Boolean) {
-        _quoteStatus.value = value
-    }
 
     fun getCurrentWeather(lat: String, lon: String) {
         viewModelScope.launch {
@@ -40,10 +30,6 @@ class GetWeatherVM(private val weatherCacheRepository: WeatherCacheRepository) :
 
             writeOrUpdateWeatherDataCache(lat, lon, cityName, weatherConditions, temperature)
         }
-    }
-
-    fun getWeatherDataCache(): LiveData<WeatherEntity> {
-        return weatherCacheRepository.getWeatherDataCache().asLiveData()
     }
 
     private fun writeOrUpdateWeatherDataCache(
@@ -106,12 +92,13 @@ class GetWeatherVM(private val weatherCacheRepository: WeatherCacheRepository) :
     }
 }
 
-class GetWeatherVMFactory(private val weatherCacheRepository: WeatherCacheRepository) :
+class MainActivityVMFactory @Inject constructor(private val provider: Provider<MainActivityVM>) :
     ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(GetWeatherVM::class.java)) {
-            return GetWeatherVM(weatherCacheRepository) as T
+        if (modelClass.isAssignableFrom(MainActivityVM::class.java)) {
+            return provider.get() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -65,21 +65,24 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.fragment:fragment-ktx:1.7.0")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
 
     //LiveData
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
     //Room
     kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-runtime:2.6.1")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     //Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
 }

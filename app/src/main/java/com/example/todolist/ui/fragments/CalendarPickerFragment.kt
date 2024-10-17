@@ -8,13 +8,13 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.todolist.R
-import com.example.todolist.ui.viewmodel.DateVM
+import com.example.todolist.ui.viewmodel.BaseViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val dateViewModel: DateVM by activityViewModels()
+    private val viewModel: BaseViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()
@@ -36,6 +36,6 @@ class CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListe
         val simpleCalendarDate = SimpleDateFormat("d MMM yyyy, EEEE", Locale.getDefault())
         val calendarDate: String = simpleCalendarDate.format(date.time)
 
-        dateViewModel.setCalendarDate(calendarDate)
+        viewModel.setCalendarDate(calendarDate)
     }
 }

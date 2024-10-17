@@ -15,11 +15,11 @@ private const val ARG_PARAM_NOTE_ID = "noteId"
 
 class DeleteNoteAlertDialog : DialogFragment() {
 
-    private val viewModel: EditDeleteNoteVM by activityViewModels {
-        EditDeleteNoteVMFactory(
-            (activity?.application as ToDoListApplication).toDoListRepository
-        )
-    }
+//    private val viewModel: EditDeleteNoteVM by activityViewModels {
+//        EditDeleteNoteVMFactory(
+//            (activity?.application as ToDoListApplication).toDoListRepository
+//        )
+//    }
 
     private var noteId: Int = -1
 
@@ -36,7 +36,7 @@ class DeleteNoteAlertDialog : DialogFragment() {
             )
                 .setPositiveButton(getString(R.string.delete_cap)) { _, _ ->
                     if (noteId >= 0) {
-                        viewModel.deleteNoteById(noteId)
+                        //viewModel.deleteNoteById(noteId)
                     }
 
                     Snackbar.make(
