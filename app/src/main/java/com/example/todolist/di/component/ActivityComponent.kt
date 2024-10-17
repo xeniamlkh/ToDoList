@@ -9,6 +9,7 @@ import com.example.todolist.di.module.viewmodel.MainActivityVMModule
 import com.example.todolist.di.module.viewmodel.NotesListVMModule
 import com.example.todolist.di.module.viewmodel.TodayFragmentVMModule
 import com.example.todolist.ui.activities.MainActivity
+import com.example.todolist.ui.alertdialogs.DeleteNoteAlertDialog
 import com.example.todolist.ui.fragments.EditNoteFragment
 import com.example.todolist.ui.fragments.NotesListFragment
 import com.example.todolist.ui.fragments.TodayFragment
@@ -47,5 +48,6 @@ interface ActivityComponent {
     fun injectTodayFragment(fragment: TodayFragment)
     fun injectEditNoteFragment(fragment: EditNoteFragment)
     fun injectNotesListFragment(fragment: NotesListFragment)
+    fun injectDeleteNoteFragment(fragment: DeleteNoteAlertDialog)
 
 }
