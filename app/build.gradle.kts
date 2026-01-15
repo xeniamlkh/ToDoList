@@ -1,12 +1,12 @@
 import java.util.Properties
 
 plugins {
-//    alias(libs.plugins.androidApplication)
-//    alias(libs.plugins.jetbrainsKotlinAndroid)
-
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+
+
 }
 
 android {
@@ -73,7 +73,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
     //Room
-    kapt("androidx.room:room-compiler:2.8.4")
+    ksp("androidx.room:room-compiler:2.8.4")
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -83,6 +83,9 @@ dependencies {
     implementation(libs.converter.gson)
 
     implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 }
