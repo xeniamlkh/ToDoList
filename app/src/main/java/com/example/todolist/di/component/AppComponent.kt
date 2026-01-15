@@ -8,6 +8,13 @@ import com.example.todolist.di.module.service.NetworkServiceModule
 import dagger.Component
 import javax.inject.Singleton
 
+// subcomponent for net/room separate
+// component for repository
+
+// qualifier for types
+
+// hilt additional scopes
+
 @Singleton
 @Component(modules = [NetworkServiceModule::class, RoomServiceModule::class])
 interface AppComponent {

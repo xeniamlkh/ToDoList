@@ -19,6 +19,7 @@ import com.example.todolist.ui.viewmodel.NotesListVM
 import com.example.todolist.ui.viewmodel.TodayFragmentVM
 import dagger.Subcomponent
 
+// dagger graph
 @ActivityScope
 @Subcomponent(
     modules =

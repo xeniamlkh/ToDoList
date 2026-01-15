@@ -8,6 +8,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.internal.Provider
 
+// assistant!
+
 @Module
 class EditDeleteNoteVMModule {
 

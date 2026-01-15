@@ -19,6 +19,8 @@ import com.example.todolist.ui.utils.LocationHelper
 import com.example.todolist.ui.viewmodel.MainActivityVM
 import javax.inject.Inject
 
+// DaggerActivityComponent
+
 private const val FRAGMENT_TAG = "todayFragment"
 
 class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
@@ -26,8 +28,6 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
 
     @Inject
     lateinit var viewModel: MainActivityVM
-
-    private lateinit var activityComponent: ActivityComponent
 
     private lateinit var fragment: TodayFragment
     private lateinit var locationHelper: LocationHelper
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
         setContentView(R.layout.activity_main)
 
         val appComponent = (application as ToDoListApplication).getAppComponent()
-        activityComponent = appComponent.activityComponent().create()
+        val activityComponent = appComponent.activityComponent().create()
         activityComponent.injectActivity(this)
 
         locationHelper = LocationHelper(this, this)

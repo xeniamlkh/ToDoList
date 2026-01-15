@@ -6,6 +6,8 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+// retrofit move here
+
 @Module
 class NetworkServiceModule {
 
