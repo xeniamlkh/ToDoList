@@ -8,12 +8,12 @@ import javax.inject.Singleton
 
 // retrofit move here
 
-@Module
-class NetworkServiceModule {
-
-    @Singleton
-    @Provides
-    fun getWeatherApiService(): WeatherApiService {
-        return WeatherApiClient.retrofit.create(WeatherApiService::class.java)
-    }
-}
+//@Module
+//class NetworkServiceModule {
+//
+//    @Singleton
+//    @Provides
+//    fun getWeatherApiService(): WeatherApiService {
+//        return WeatherApiClient.retrofit.create(WeatherApiService::class.java)
+//    }
+//}

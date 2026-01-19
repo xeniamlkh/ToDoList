@@ -82,8 +82,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
+    //implementation(libs.dagger)
+    //ksp(libs.dagger.compiler)
 
     //Hilt
     implementation(libs.hilt.android)
