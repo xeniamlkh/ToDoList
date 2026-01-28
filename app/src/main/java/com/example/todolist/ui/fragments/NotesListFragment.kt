@@ -10,10 +10,8 @@ import android.widget.Button
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.R
-import com.example.todolist.ToDoListApplication
 import com.example.todolist.data.room.entity.ToDoListEntity
 import com.example.todolist.databinding.FragmentNotesListBinding
-import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.alertdialogs.DeleteNoteAlertDialog
 import com.example.todolist.ui.recyclerview.NotesAdapter
 import com.example.todolist.ui.recyclerview.RecyclerViewItemClickListener
@@ -30,8 +28,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
 
     @Inject
     lateinit var viewModel: NotesListVM
-
-    private lateinit var activityComponent: ActivityComponent
 
     private var dateParam: String? = null
     private var byDate: Boolean? = null
@@ -57,10 +53,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val appComponent = (requireActivity().application as ToDoListApplication).getAppComponent()
-        activityComponent = appComponent.activityComponent().create()
-        activityComponent.injectNotesListFragment(this)
 
         if (byDate == true) {
             viewModel.getListOfNotesByDate(dateParam!!)

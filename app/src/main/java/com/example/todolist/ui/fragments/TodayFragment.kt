@@ -4,27 +4,26 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import com.example.todolist.R
-import com.example.todolist.ToDoListApplication
 import com.example.todolist.data.room.entity.WeatherEntity
 import com.example.todolist.databinding.FragmentTodayBinding
-import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.utils.LocationHelper
 import com.example.todolist.ui.utils.getTodayDate
 import com.example.todolist.ui.viewmodel.TodayFragmentVM
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+private const val TAG = "!!!!!"
 class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.LocationUpdateListener {
 
     @Inject
     lateinit var viewModel: TodayFragmentVM
 
-    private lateinit var activityComponent: ActivityComponent
     private lateinit var locationHelper: LocationHelper
 
     private var finishedTasks: Boolean = false
@@ -40,10 +39,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val appComponent = (requireActivity().application as ToDoListApplication).getAppComponent()
-        activityComponent = appComponent.activityComponent().create()
-        activityComponent.injectTodayFragment(this)
 
         locationHelper = LocationHelper(requireContext(), this)
         getLocation()
@@ -169,16 +164,20 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
         val latitude = location.latitude.toString()
         val longitude = location.longitude.toString()
 
-        viewModel.getWeatherDataCache().observe(this.viewLifecycleOwner) { weatherEntity ->
-            val cachedLat = weatherEntity.lat
-            val cachedLon = weatherEntity.lon
-
-            if (latitude == cachedLat && longitude == cachedLon) {
-                getCachedWeather(weatherEntity)
-            } else {
-                getActualWeather()
-            }
-        }
+//        viewModel.getWeatherDataCache().observe(this.viewLifecycleOwner) { weatherEntity ->
+//            val cachedLat = weatherEntity.lat
+//            val cachedLon = weatherEntity.lon
+//
+//            if (latitude == cachedLat && longitude == cachedLon) {
+//                //TODO Error in this method java.lang.NullPointerException
+//                //getCachedWeather(weatherEntity)
+//                Log.d(TAG, "onLocationUpdated: getCachedWeather...")
+//            } else {
+//                //TODO Error in this method java.lang.NullPointerException
+//                //getActualWeather()
+//                Log.d(TAG, "onLocationUpdated: getActualWeather...")
+//            }
+//        }
     }
 
     private fun getActualWeather() {

@@ -5,8 +5,6 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.example.todolist.R
-import com.example.todolist.ToDoListApplication
-import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.viewmodel.EditDeleteNoteVM
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
@@ -18,15 +16,9 @@ class DeleteNoteAlertDialog : DialogFragment() {
     @Inject
     lateinit var viewModel: EditDeleteNoteVM
 
-    private lateinit var activityComponent: ActivityComponent
-
     private var noteId: Int = -1
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
-        val appComponent = (requireActivity().application as ToDoListApplication).getAppComponent()
-        activityComponent = appComponent.activityComponent().create()
-        activityComponent.injectDeleteNoteFragment(this)
 
         arguments?.let {
             noteId = it.getInt(ARG_PARAM_NOTE_ID)

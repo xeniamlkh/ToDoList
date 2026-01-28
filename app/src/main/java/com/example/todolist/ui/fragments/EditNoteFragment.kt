@@ -8,9 +8,7 @@ import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.R
-import com.example.todolist.ToDoListApplication
 import com.example.todolist.databinding.FragmentEditNoteBinding
-import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.viewmodel.EditDeleteNoteVM
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -24,8 +22,6 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
     @Inject
     lateinit var viewModel: EditDeleteNoteVM
 
-    private lateinit var activityComponent: ActivityComponent
-
     private lateinit var callback: OnBackPressedCallback
 
     private var noteId: Int? = null
@@ -33,10 +29,6 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val appComponent = (requireActivity().application as ToDoListApplication).getAppComponent()
-        activityComponent = appComponent.activityComponent().create()
-        activityComponent.injectEditNoteFragment(this)
 
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

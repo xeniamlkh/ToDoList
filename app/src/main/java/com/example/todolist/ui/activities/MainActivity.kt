@@ -11,17 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.todolist.R
-import com.example.todolist.ToDoListApplication
-//import com.example.todolist.di.component.ActivityComponent
 import com.example.todolist.ui.alertdialogs.PermissionRationaleDialog
 import com.example.todolist.ui.alertdialogs.PermissionRationaleDialogListener
 import com.example.todolist.ui.fragments.TodayFragment
 import com.example.todolist.ui.utils.LocationHelper
 import com.example.todolist.ui.viewmodel.MainActivityVM
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-
-// DaggerActivityComponent
 
 private const val FRAGMENT_TAG = "todayFragment"
 
@@ -30,7 +25,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     LocationHelper.LocationUpdateListener {
 
     //@Inject lateinit var viewModel: MainActivityVM
-//    lateinit var viewModel: MainActivityVM
+    //lateinit var viewModel: MainActivityVM
 
     private val viewModel: MainActivityVM by viewModels()
 
@@ -55,10 +50,6 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // val appComponent = (application as ToDoListApplication).getAppComponent()
-        //val activityComponent = appComponent.activityComponent().create()
-        // activityComponent.injectActivity(this)
 
         locationHelper = LocationHelper(this, this)
 

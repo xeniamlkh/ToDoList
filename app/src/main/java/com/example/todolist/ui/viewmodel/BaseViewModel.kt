@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.todolist.data.network.WeatherData
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 open class BaseViewModel : ViewModel() {
 
@@ -24,5 +23,4 @@ open class BaseViewModel : ViewModel() {
     fun showQuote(value: Boolean) {
         _quoteStatus.value = value
     }
-
 }
