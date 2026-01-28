@@ -5,8 +5,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-
-
 }
 
 android {
@@ -39,10 +37,10 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding = true
-        buildConfig = true
-    }
+//    buildFeatures {
+//        viewBinding = true
+//        buildConfig = true
+//    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -64,28 +62,19 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    //ViewModel
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.fragment.ktx)
-
-    //LiveData
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-    //Room
-    ksp("androidx.room:room-compiler:2.8.4")
-    implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.room.compiler)
-    implementation(libs.androidx.room.ktx)
-
-    //Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-
-    //implementation(libs.dagger)
-    //ksp(libs.dagger.compiler)
+//    //ViewModel
+//    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+//    implementation(libs.androidx.activity.ktx)
+//    implementation(libs.androidx.fragment.ktx)
+//
+//    //LiveData
+//    implementation(libs.androidx.lifecycle.livedata.ktx)
 
     //Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":presentation"))
 }
