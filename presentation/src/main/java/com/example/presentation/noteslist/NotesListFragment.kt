@@ -10,12 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolist.data.room.entity.ToDoListEntity
-import com.example.todolist.databinding.FragmentNotesListBinding
-import com.example.todolist.ui.alertdialogs.DeleteNoteAlertDialog
-import com.example.todolist.ui.recyclerview.NotesAdapter
-import com.example.todolist.ui.recyclerview.RecyclerViewItemClickListener
-import com.example.todolist.ui.viewmodel.NotesListVM
+import com.example.presentation.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import javax.inject.Inject

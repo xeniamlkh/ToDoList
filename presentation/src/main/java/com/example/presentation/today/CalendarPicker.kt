@@ -1,4 +1,4 @@
-package com.example.presentation.calendar
+package com.example.presentation.today
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -7,13 +7,14 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import com.example.presentation.R
+import com.example.presentation.calendar.CalendarVM
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CalendarPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class CalendarPicker : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val viewModel: CalendarVM by viewModels()
+    private val viewModel: TodayFragmentVM by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val c = Calendar.getInstance()

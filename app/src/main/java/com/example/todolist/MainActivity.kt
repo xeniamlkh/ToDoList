@@ -1,152 +1,127 @@
 package com.example.todolist
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.example.domain.enums.DisplayBoard
 import com.example.presentation.today.TodayFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val FRAGMENT_TAG = "todayFragment"
 
-//LocationHelper.LocationUpdateListener
-//PermissionRationaleDialogListener
-//TODO Temporary remove LocationHelper.LocationUpdateListener & PermissionRationaleDialogListener- return later!
-//TODO Rewrite permisiion request
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    //@Inject lateinit var viewModel: MainActivityVM
-    //lateinit var viewModel: MainActivityVM
-
-    private val viewModel: MainActivityVM by viewModels()
+class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
 
     private lateinit var fragment: TodayFragment
+    private lateinit var boardArgument: DisplayBoard
 
-    //TODO Temporary
-   // private lateinit var locationHelper: LocationHelper
-//    private val requestPermissionLauncher =
-//        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-//
-//            val coarseLocationPermission =
-//                result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)
-//            val fineLocationPermission =
-//                result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)
-//
-//            if ((coarseLocationPermission) && (fineLocationPermission)) {
-//                getLocation()
-//            } else {
-//                getQuote()
-//            }
-//        }
+    private val permissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts
+                .RequestMultiplePermissions()
+        ) { result ->
+
+            val coarseLocationPermission = result
+                .getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)
+
+            val fineLocationPermission = result
+                .getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false)
+
+            if ((coarseLocationPermission) && (fineLocationPermission)) {
+                boardArgument = DisplayBoard.WEATHER
+            } else {
+                boardArgument = DisplayBoard.QUOTE
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //TODO Temporary
-        //locationHelper = LocationHelper(this, this)
-        //checkLocationPermissions()
-        viewModel.showQuote(true) //TODO remove from here - just testing
+        checkLocationPermissions()
 
-        fragment = if (savedInstanceState == null) {
-            TodayFragment()
-        } else {
-            supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as TodayFragment
-        }
+//        fragment = if (savedInstanceState == null) {
+//            TodayFragment()
+//        } else {
+//            supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as TodayFragment
+//        }
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.today_fragment_container, fragment, FRAGMENT_TAG)
+            //.replace(R.id.today_fragment_container, fragment, FRAGMENT_TAG) //TODO pass an arg
+            .replace(R.id.today_fragment_container, TodayFragment.newInstance(boardArgument))
             .commit()
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStack()
-                } else {
-                    finish()
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (supportFragmentManager.backStackEntryCount > 0) {
+                        supportFragmentManager.popBackStack()
+                    } else {
+                        finish()
+                    }
                 }
+            })
+    }
+
+    private fun checkLocationPermissions() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission( // || or && ?
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                boardArgument = DisplayBoard.WEATHER
             }
-        })
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) -> {
+                showRationalDialog()
+            }
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) -> {
+                showRationalDialog()
+            }
+
+            else -> {
+                permissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                )
+            }
+        }
     }
 
-    //TODO Temporary
-//    private fun checkLocationPermissions() {
-//        when {
-//            (ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED &&
-//                    ContextCompat.checkSelfPermission(
-//                        this,
-//                        Manifest.permission.ACCESS_FINE_LOCATION
-//                    ) == PackageManager.PERMISSION_GRANTED) -> {
-//                getLocation()
-//            }
-//
-//            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) -> {
-//                showExplanation()
-//            }
-//
-//            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-//                showExplanation()
-//            }
-//
-//            else -> {
-//                //requestLocationPermissions()
-//                callPermissionLauncher()
-//            }
-//        }
-//    }
-
-    //TODO Temporary
-//    private fun showExplanation() {
-//        PermissionRationaleDialog(this).show(supportFragmentManager, "RATIONALE")
-//    }
-
-    //TODO Temporary
-//    private fun getLocation() {
-//        if (ActivityCompat.checkSelfPermission(
-//                this, Manifest.permission.ACCESS_FINE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                this, Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            return
-//        } else {
-//            locationHelper.startLocationUpdates()
-//        }
-//    }
-
-    //TODO Temporary
-//    override fun callPermissionLauncher() {
-//        requestPermissionLauncher.launch(
-//            arrayOf(
-//                Manifest.permission.ACCESS_COARSE_LOCATION,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            )
-//        )
-//
-//        //requestLocationPermissions()
-//    }
-
-    //TODO Temporary
-//    override fun getQuote() {
-//        viewModel.showQuote(true)
-//    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //TODO Temporary
-        //locationHelper.stopLocationUpdates()
+    private fun showRationalDialog() {
+        PermissionRationaleDialog(this)
+            .show(supportFragmentManager, "RATIONALE")
     }
 
-    //TODO Temporary
-//    override fun onLocationUpdated(location: Location) {
-//        val latitude = location.latitude.toString()
-//        val longitude = location.longitude.toString()
-//
-//        viewModel.getCurrentWeather(latitude, longitude)
-//        viewModel.showQuote(false)
-//    }
+    override fun onPermissionConfirmation() {
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
+    }
+
+    override fun onDismissPermission() {
+        boardArgument = DisplayBoard.QUOTE
+    }
 }

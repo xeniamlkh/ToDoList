@@ -4,29 +4,41 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
-import com.example.presentation.calendar.CalendarPickerFragment
+import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
+import com.example.domain.enums.DisplayBoard
+import com.example.presentation.BaseFragment
+import com.example.presentation.R
+import com.example.presentation.databinding.FragmentTodayBinding
 import com.example.presentation.noteslist.NotesListFragment
-import com.example.todolist.R
-import com.example.todolist.data.room.entity.WeatherEntity
-import com.example.todolist.databinding.FragmentTodayBinding
-import com.example.todolist.ui.utils.LocationHelper
-import com.example.todolist.ui.utils.getTodayDate
-import javax.inject.Inject
-import kotlin.collections.get
-import kotlin.math.roundToInt
+import com.example.presentation.util.getTodayDate
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "!!!!!"
-class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.LocationUpdateListener {
+//TODO Temporary
+//LocationHelper.LocationUpdateListener
 
-    @Inject
-    lateinit var viewModel: TodayFragmentVM
+private const val ARG_BOARD_PARAM = "board_parameter"
 
-    private lateinit var locationHelper: LocationHelper
+@AndroidEntryPoint
+class TodayFragment : BaseFragment<FragmentTodayBinding>() {
+
+    private val viewModel: TodayFragmentVM by activityViewModels()
+
+    //TODO Temporary
+    //private lateinit var locationHelper: LocationHelper
+
+    private val boardParam: DisplayBoard by lazy {
+        DisplayBoard.valueOf(
+            requireArguments().getString(ARG_BOARD_PARAM)!!
+        )
+    }
+
 
     private var finishedTasks: Boolean = false
     private var unfinishedTasks: Boolean = false
@@ -39,11 +51,20 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
         return FragmentTodayBinding.inflate(inflater, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+       // boardParam = arguments?.getSerializable(ARG_BOARD_PARAM, DisplayBoard)
+       // boardParam.name = arguments?.getString(ARG_BOARD_PARAM)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated: boardParam = $boardParam")
 
-        locationHelper = LocationHelper(Fragment.requireContext(), this)
-        getLocation()
+        //TODO Temporary
+        // locationHelper = LocationHelper(Fragment.requireContext(), this)
+        // getLocation()
+        //locationHelper = LocationHelper(this, this)
 
         if (savedInstanceState != null) {
             val savedDate = savedInstanceState.getString("currentDate")
@@ -54,7 +75,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
             unfinishedTasks = savedInstanceState.getBoolean("unfinishedTasks")
 
         } else {
-            val todayDate = Fragment.requireContext().getTodayDate()
+            val todayDate = requireContext().getTodayDate()
             binding.todayDate.text = todayDate
             updateNotesList(todayDate, byDateCond = true, finishedCond = false)
         }
@@ -83,7 +104,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
                     cityName.visibility = View.GONE
                     temperature.visibility = View.GONE
                     condition.visibility = View.GONE
-                    quote.text = Fragment.getResources.getString(R.string.have_a_nice_day)
+                    quote.text = resources.getString(R.string.have_a_nice_day)
                     quote.visibility = View.VISIBLE
                 }
             } else {
@@ -102,7 +123,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
             finishedTasks = false
             unfinishedTasks = false
             binding.warningNoteRequired.visibility = View.GONE
-            CalendarPickerFragment().show(Fragment.getParentFragmentManager, "CALENDAR_PICKER")
+            CalendarPicker().show(getParentFragmentManager(), "CALENDAR_PICKER")
         }
 
         binding.saveNoteBtn.setOnClickListener {
@@ -141,7 +162,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
     }
 
     private fun updateNotesList(date: String, byDateCond: Boolean, finishedCond: Boolean) {
-        Fragment.getChildFragmentManager.beginTransaction()
+        getChildFragmentManager().beginTransaction()
             .replace(
                 R.id.recycler_view_fragment_container,
                 NotesListFragment.newInstance(date, byDateCond, finishedCond)
@@ -149,23 +170,26 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
             .commit()
     }
 
-    private fun getLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                Fragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                Fragment.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        } else {
-            locationHelper.startLocationUpdates()
-        }
-    }
 
-    override fun onLocationUpdated(location: Location) {
-        val latitude = location.latitude.toString()
-        val longitude = location.longitude.toString()
+    //TODO Temporary
+    //why request permissions again if already did it in the Activity?
+//    private fun getLocation() {
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            return
+//        } else {
+//            locationHelper.startLocationUpdates()
+//        }
+//    }
 
+//    override fun onLocationUpdated(location: Location) {
+//        val latitude = location.latitude.toString()
+//        val longitude = location.longitude.toString()
+//
 //        viewModel.getWeatherDataCache().observe(this.viewLifecycleOwner) { weatherEntity ->
 //            val cachedLat = weatherEntity.lat
 //            val cachedLon = weatherEntity.lon
@@ -180,103 +204,113 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
 //                Log.d(TAG, "onLocationUpdated: getActualWeather...")
 //            }
 //        }
-    }
+//    }
 
-    private fun getActualWeather() {
-        viewModel.weatherData.observe(this.viewLifecycleOwner) { weatherData ->
-            if (weatherData != null) {
-                binding.loadingProgressBar.visibility = View.GONE
 
-                val weatherConditions = weatherData.weather[0].main
-                if (weatherConditions.isNotEmpty()) {
-                    binding.condition.text = weatherConditions
-                } else {
-                    binding.condition.text = ""
-                }
+    //TODO Temporary
+//    override fun onLocationUpdated(location: Location) {
+//        val latitude = location.latitude.toString()
+//        val longitude = location.longitude.toString()
+//
+//        viewModel.getCurrentWeather(latitude, longitude)
+//        viewModel.showQuote(false)
+//    }
 
-                when (weatherConditions) {
-                    "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
-                    "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
-                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
-                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
-                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
-                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
-                    else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
-                }
+//    private fun getActualWeather() {
+//        viewModel.weatherData.observe(this.viewLifecycleOwner) { weatherData ->
+//            if (weatherData != null) {
+//                binding.loadingProgressBar.visibility = View.GONE
+//
+//                val weatherConditions = weatherData.weather[0].main
+//                if (weatherConditions.isNotEmpty()) {
+//                    binding.condition.text = weatherConditions
+//                } else {
+//                    binding.condition.text = ""
+//                }
+//
+//                when (weatherConditions) {
+//                    "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
+//                    "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
+//                    "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
+//                    "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
+//                    "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
+//                    "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
+//                    else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
+//                }
+//
+//                val cityName = weatherData.name
+//                if (cityName.isNotEmpty()) {
+//                    binding.cityName.text = cityName
+//                } else {
+//                    binding.cityName.text = ""
+//                }
+//
+//                val temperature = weatherData.main.temp.roundToInt()
+//                val stringBuilder = StringBuilder()
+//                stringBuilder.append(temperature.toString()).append(" \u2103")
+//                binding.temperature.text = stringBuilder.toString()
+//            } else {
+//                binding.apply {
+//                    loadingProgressBar.visibility = View.GONE
+//                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+//                    goodDayIcon.visibility = View.VISIBLE
+//                    weatherIcon.visibility = View.GONE
+//                    cityName.visibility = View.GONE
+//                    temperature.visibility = View.GONE
+//                    condition.visibility = View.GONE
+//                    quote.text = Fragment.getResources.getString(R.string.have_a_nice_day)
+//                    quote.visibility = View.VISIBLE
+//                }
+//            }
+//        }
+//    }
 
-                val cityName = weatherData.name
-                if (cityName.isNotEmpty()) {
-                    binding.cityName.text = cityName
-                } else {
-                    binding.cityName.text = ""
-                }
-
-                val temperature = weatherData.main.temp.roundToInt()
-                val stringBuilder = StringBuilder()
-                stringBuilder.append(temperature.toString()).append(" \u2103")
-                binding.temperature.text = stringBuilder.toString()
-            } else {
-                binding.apply {
-                    loadingProgressBar.visibility = View.GONE
-                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
-                    goodDayIcon.visibility = View.VISIBLE
-                    weatherIcon.visibility = View.GONE
-                    cityName.visibility = View.GONE
-                    temperature.visibility = View.GONE
-                    condition.visibility = View.GONE
-                    quote.text = Fragment.getResources.getString(R.string.have_a_nice_day)
-                    quote.visibility = View.VISIBLE
-                }
-            }
-        }
-    }
-
-    private fun getCachedWeather(weatherCache: WeatherEntity) {
-        if (weatherCache.cityName.isEmpty()) {
-            binding.apply {
-                loadingProgressBar.visibility = View.GONE
-                goodDayIcon.setImageResource(R.drawable.ic_nice_day)
-                goodDayIcon.visibility = View.VISIBLE
-                weatherIcon.visibility = View.GONE
-                cityName.visibility = View.GONE
-                temperature.visibility = View.GONE
-                condition.visibility = View.GONE
-                quote.text = Fragment.getResources.getString(R.string.have_a_nice_day)
-                quote.visibility = View.VISIBLE
-            }
-        } else {
-            binding.apply {
-                loadingProgressBar.visibility = View.GONE
-                goodDayIcon.visibility = View.GONE
-                weatherIcon.visibility = View.VISIBLE
-                cityName.visibility = View.VISIBLE
-                temperature.visibility = View.VISIBLE
-                condition.visibility = View.VISIBLE
-                quote.visibility = View.GONE
-
-            }
-
-            val cityName = weatherCache.cityName
-            val weatherConditions = weatherCache.weatherConditions
-            val temperature = weatherCache.temperature
-            val stringBuilder = StringBuilder()
-            stringBuilder.append(temperature.toString()).append(" \u2103")
-
-            binding.cityName.text = cityName
-            binding.condition.text = weatherConditions
-            binding.temperature.text = stringBuilder.toString()
-
-            when (weatherConditions) {
-                "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
-                "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
-                "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
-                "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
-                "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
-                "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
-                else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
-            }
-        }
-    }
+//    private fun getCachedWeather(weatherCache: WeatherEntity) {
+//        if (weatherCache.cityName.isEmpty()) {
+//            binding.apply {
+//                loadingProgressBar.visibility = View.GONE
+//                goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+//                goodDayIcon.visibility = View.VISIBLE
+//                weatherIcon.visibility = View.GONE
+//                cityName.visibility = View.GONE
+//                temperature.visibility = View.GONE
+//                condition.visibility = View.GONE
+//                quote.text = Fragment.getResources.getString(R.string.have_a_nice_day)
+//                quote.visibility = View.VISIBLE
+//            }
+//        } else {
+//            binding.apply {
+//                loadingProgressBar.visibility = View.GONE
+//                goodDayIcon.visibility = View.GONE
+//                weatherIcon.visibility = View.VISIBLE
+//                cityName.visibility = View.VISIBLE
+//                temperature.visibility = View.VISIBLE
+//                condition.visibility = View.VISIBLE
+//                quote.visibility = View.GONE
+//
+//            }
+//
+//            val cityName = weatherCache.cityName
+//            val weatherConditions = weatherCache.weatherConditions
+//            val temperature = weatherCache.temperature
+//            val stringBuilder = StringBuilder()
+//            stringBuilder.append(temperature.toString()).append(" \u2103")
+//
+//            binding.cityName.text = cityName
+//            binding.condition.text = weatherConditions
+//            binding.temperature.text = stringBuilder.toString()
+//
+//            when (weatherConditions) {
+//                "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
+//                "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
+//                "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
+//                "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
+//                "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
+//                "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
+//                else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
+//            }
+//        }
+//    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -287,6 +321,15 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>(), LocationHelper.Locat
 
     override fun onDestroyView() {
         super.onDestroyView()
-        locationHelper.stopLocationUpdates()
+        //locationHelper.stopLocationUpdates()
+    }
+
+    companion object {
+        fun newInstance(boardParam: DisplayBoard) =
+            TodayFragment().apply {
+                arguments = bundleOf(
+                    ARG_BOARD_PARAM to boardParam.name
+                )
+            }
     }
 }

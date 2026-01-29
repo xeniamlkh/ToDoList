@@ -1,7 +1,7 @@
-package com.example.todolist.ui.utils
+package com.example.presentation.util
 
 import android.content.Context
-import com.example.todolist.R
+import com.example.presentation.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 

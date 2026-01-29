@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">To Do List</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dots">⋮</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="warning_delete_note">Are you sure you want to delete this note?</string>
+    <string name="cancel_cap">Cancel</string>
+    <string name="delete_cap">DELETE</string>
+    <string name="note_deleted">Note deleted</string>
+    <string name="delete_finished">Delete finished?</string>
+    <string name="today_i_plan_to_do">Today I plan to do</string>
+    <string name="note_can_not_be_empty">Note can not be empty</string>
+    <string name="have_a_nice_day">Have a nice day!</string>
+    <string name="rationale_message">\nIf you don\'t want to see this message in the future decline it. To load the weather later, give location permission to the app in settings.</string>
+    <string name="rationale_title">To get weather information please provide access</string>
+    <string name="ok_btn">OK</string>
+    <string name="decline_btn">DECLINE</string>
+    <string name="activity_warning">Activity cannot be null</string>
+    <string name="no_finished_tasks">No finished tasks</string>
+    <string name="all_work_is_done">All work is done! No unfinished tasks</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="all_finished_tasks">All finished tasks</string>
+    <string name="all_unfinished_tasks">All unfinished tasks</string>
+    <string name="d_mmm_yyyy_eeee">d MMM yyyy, EEEE</string>
+</resources>

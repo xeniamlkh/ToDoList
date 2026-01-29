@@ -2,12 +2,13 @@ package com.example.todolist
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
 interface PermissionRationaleDialogListener {
-    fun callPermissionLauncher()
-    fun getQuote()
+    fun onPermissionConfirmation()
+    fun onDismissPermission()
 }
 
 class PermissionRationaleDialog(private val rationaleListener: PermissionRationaleDialogListener) :
@@ -16,14 +17,15 @@ class PermissionRationaleDialog(private val rationaleListener: PermissionRationa
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(getString(R.string.rationale_message))
-                .setIcon(R.drawable.ic_nice_day)
+            builder
                 .setTitle(getString(R.string.rationale_title))
+                .setMessage(getString(R.string.rationale_message))
+                .setIcon(R.drawable.ic_nice_day)
                 .setPositiveButton(getString(R.string.ok_btn)) { _, _ ->
-                    rationaleListener.callPermissionLauncher()
+                    rationaleListener.onPermissionConfirmation()
                 }
                 .setNegativeButton(getString(R.string.decline_btn)) { _, _ ->
-                    rationaleListener.getQuote()
+                    rationaleListener.onDismissPermission()
                 }
             builder.create()
         } ?: throw IllegalStateException(getString(R.string.activity_warning))
