@@ -5,13 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.domain.interfaces.NotesRepository
+import com.example.domain.models.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import javax.inject.Inject
 //rename to SharedViewModel
 @HiltViewModel
 class TodayFragmentVM @Inject constructor(
-    private val toDoListRepository: NotesRepositoryImpl,
+    private val toDoListRepository: NotesRepository,
     //private val weatherCacheRepository: WeatherCacheRepository
 ) : ViewModel() {
 
@@ -21,8 +24,8 @@ class TodayFragmentVM @Inject constructor(
     private val _quoteStatus = MutableLiveData<Boolean>()
     val quoteStatus: LiveData<Boolean> get() = _quoteStatus
 
-    private var _weatherData = MutableLiveData<WeatherData>()
-    val weatherData: LiveData<WeatherData> get() = _weatherData
+//    private var _weatherData = MutableLiveData<WeatherData>()
+//    val weatherData: LiveData<WeatherData> get() = _weatherData
 
     fun showQuote(value: Boolean) {
         _quoteStatus.value = value
@@ -32,20 +35,18 @@ class TodayFragmentVM @Inject constructor(
         _calendarDate.value = calendarDate
     }
 
-    fun createNote(date: String, checkboxStatus: Boolean, note: String) {
-        val noteRecord = ToDoListEntity(0, date, checkboxStatus, note)
-        insertNote(noteRecord)
-    }
-
-    private fun insertNote(note: ToDoListEntity) {
+    fun createNote(date: String, checkboxStatus: Boolean, text: String) {
+        val note = Note(0, date = date, checkboxStatus = checkboxStatus, text = text)
         viewModelScope.launch {
             toDoListRepository.insertNote(note)
         }
     }
 
-    fun getWeatherDataCache(): LiveData<WeatherEntity> {
-        return weatherCacheRepository.getWeatherDataCache().asLiveData()
-    }
+
+    //TODO Temporary
+//    fun getWeatherDataCache(): LiveData<WeatherEntity> {
+//        return weatherCacheRepository.getWeatherDataCache().asLiveData()
+//    }
 
     //TODO Temporary
     //private val apiKey = BuildConfig.API_KEY

@@ -13,7 +13,7 @@
     <string name="note_can_not_be_empty">Note can not be empty</string>
     <string name="have_a_nice_day">Have a nice day!</string>
     <string name="rationale_message">\nIf you don\'t want to see this message in the future decline it. To load the weather later, give location permission to the app in settings.</string>
-    <string name="rationale_title">To get weather information please provide access</string>
+    <string name="rationale_title">To get a weather forecast please give a location access</string>
     <string name="ok_btn">OK</string>
     <string name="decline_btn">DECLINE</string>
     <string name="activity_warning">Activity cannot be null</string>

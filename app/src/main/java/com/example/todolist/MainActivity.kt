@@ -3,6 +3,8 @@ package com.example.todolist
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -13,6 +15,7 @@ import com.example.domain.enums.DisplayBoard
 import com.example.presentation.today.TodayFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val TAG = "!!!!!"
 private const val FRAGMENT_TAG = "todayFragment"
 
 @AndroidEntryPoint
@@ -27,6 +30,8 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
                 .RequestMultiplePermissions()
         ) { result ->
 
+            Log.d(TAG, "1: ")
+
             val coarseLocationPermission = result
                 .getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)
 
@@ -36,15 +41,18 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
             if ((coarseLocationPermission) && (fineLocationPermission)) {
                 boardArgument = DisplayBoard.WEATHER
             } else {
-                boardArgument = DisplayBoard.QUOTE
+               // DisplayBoard.QUOTE
+                showRationalDialog()
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.d(TAG, "onCreate: ...")
+        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show()
 
-        checkLocationPermissions()
+       // checkLocationPermissions()
 
 //        fragment = if (savedInstanceState == null) {
 //            TodayFragment()
@@ -52,25 +60,26 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
 //            supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as TodayFragment
 //        }
 
-        supportFragmentManager.beginTransaction()
-            //.replace(R.id.today_fragment_container, fragment, FRAGMENT_TAG) //TODO pass an arg
-            .replace(R.id.today_fragment_container, TodayFragment.newInstance(boardArgument))
-            .commit()
+//        supportFragmentManager.beginTransaction()
+//            //.replace(R.id.today_fragment_container, fragment, FRAGMENT_TAG) //TODO pass an arg
+//            .replace(R.id.today_fragment_container, TodayFragment.newInstance(DisplayBoard.QUOTE))
+//            .commit()
 
-        onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (supportFragmentManager.backStackEntryCount > 0) {
-                        supportFragmentManager.popBackStack()
-                    } else {
-                        finish()
-                    }
-                }
-            })
+//        onBackPressedDispatcher.addCallback(
+//            this,
+//            object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//                    if (supportFragmentManager.backStackEntryCount > 0) {
+//                        supportFragmentManager.popBackStack()
+//                    } else {
+//                        finish()
+//                    }
+//                }
+//            })
     }
 
     private fun checkLocationPermissions() {
+        Log.d(TAG, "checkLocationPermissions: ???")
         when {
             ContextCompat.checkSelfPermission(
                 this,
@@ -79,6 +88,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
+                Log.d(TAG, "checkLocationPermissions: 2")
                 boardArgument = DisplayBoard.WEATHER
             }
 
@@ -86,6 +96,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) -> {
+                Log.d(TAG, "checkLocationPermissions: 3")
                 showRationalDialog()
             }
 
@@ -93,10 +104,12 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) -> {
+                Log.d(TAG, "checkLocationPermissions: 4")
                 showRationalDialog()
             }
 
             else -> {
+                Log.d(TAG, "checkLocationPermissions: 5")
                 permissionLauncher.launch(
                     arrayOf(
                         Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -122,6 +135,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
     }
 
     override fun onDismissPermission() {
+        Log.d(TAG, "onDismissPermission: 6")
         boardArgument = DisplayBoard.QUOTE
     }
 }
