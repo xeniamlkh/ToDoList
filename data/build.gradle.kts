@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    //alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kspPlugin)
+    alias(libs.plugins.hiltPlugin)
 }
 
 android {
@@ -29,8 +29,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+
+//    kotlinOptions {
+//        jvmTarget = "11"
+//    }
+
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+        }
     }
 }
 
@@ -43,17 +50,17 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //Room
-    ksp("androidx.room:room-compiler:2.8.4")
-    implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.room.compiler)
-    implementation(libs.androidx.room.ktx)
+//    ksp("androidx.room:room-compiler:2.8.4")
+//    implementation(libs.androidx.room.runtime)
+//    annotationProcessor(libs.androidx.room.room.compiler)
+//    implementation(libs.androidx.room.ktx)
 
     //Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
+//    implementation(libs.retrofit)
+//    implementation(libs.converter.gson)
 
     //Hilt
-    implementation(libs.hilt.android)
+    implementation(libs.hilt)
     ksp(libs.hilt.compiler)
 
     implementation(project(":domain"))

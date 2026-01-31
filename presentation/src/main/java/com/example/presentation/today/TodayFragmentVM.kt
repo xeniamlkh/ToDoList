@@ -9,12 +9,12 @@ import com.example.domain.interfaces.NotesRepository
 import com.example.domain.models.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import javax.inject.Inject
+
 //rename to SharedViewModel
 @HiltViewModel
 class TodayFragmentVM @Inject constructor(
-    private val toDoListRepository: NotesRepository,
+    //private val toDoListRepository: NotesRepository,
     //private val weatherCacheRepository: WeatherCacheRepository
 ) : ViewModel() {
 
@@ -38,7 +38,7 @@ class TodayFragmentVM @Inject constructor(
     fun createNote(date: String, checkboxStatus: Boolean, text: String) {
         val note = Note(0, date = date, checkboxStatus = checkboxStatus, text = text)
         viewModelScope.launch {
-            toDoListRepository.insertNote(note)
+            //toDoListRepository.insertNote(note)
         }
     }
 

@@ -8,7 +8,6 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.presentation.R
-import com.example.presentation.calendar.CalendarVM
 import java.text.SimpleDateFormat
 import java.util.Locale
 

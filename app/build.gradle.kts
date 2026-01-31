@@ -1,10 +1,11 @@
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    //id("com.android.application")
+    alias(libs.plugins.androidApplication)
+    //alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kspPlugin)
+    alias(libs.plugins.hiltPlugin)
 }
 
 android {
@@ -43,11 +44,20 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+        //sourceCompatibility = VERSION_11
+        // targetCompatibility = VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+//    kotlinOptions {
+//        jvmTarget = "11"
+//    }
+
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+        }
     }
 }
 
@@ -62,16 +72,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-//    //ViewModel
-//    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-//    implementation(libs.androidx.activity.ktx)
-//    implementation(libs.androidx.fragment.ktx)
-//
-//    //LiveData
-//    implementation(libs.androidx.lifecycle.livedata.ktx)
-
     //Hilt
-    implementation(libs.hilt.android)
+    implementation(libs.hilt)
     ksp(libs.hilt.compiler)
 
     implementation(project(":data"))

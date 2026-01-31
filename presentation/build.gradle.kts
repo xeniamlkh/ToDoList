@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    //alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kspPlugin)
+    alias(libs.plugins.hiltPlugin)
 }
 
 android {
@@ -35,8 +35,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+
+//    kotlinOptions {
+//        jvmTarget = "11"
+//    }
+
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+        }
     }
 }
 
@@ -57,7 +64,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
     //Hilt
-    implementation(libs.hilt.android)
+    implementation(libs.hilt)
     ksp(libs.hilt.compiler)
 
     implementation(project(":domain"))

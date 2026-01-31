@@ -15,7 +15,6 @@ import com.example.domain.enums.DisplayBoard
 import com.example.presentation.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentTodayBinding
-import com.example.presentation.noteslist.NotesListFragment
 import com.example.presentation.util.getTodayDate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +38,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
         )
     }
 
-
     private var finishedTasks: Boolean = false
     private var unfinishedTasks: Boolean = false
     private var actualDate: String? = null
@@ -51,15 +49,23 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
         return FragmentTodayBinding.inflate(inflater, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-       // boardParam = arguments?.getSerializable(ARG_BOARD_PARAM, DisplayBoard)
-       // boardParam.name = arguments?.getString(ARG_BOARD_PARAM)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated: boardParam = $boardParam")
+
+        if (boardParam == DisplayBoard.QUOTE) {
+            binding.apply {
+                loadingProgressBar.visibility = View.GONE
+                goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+                goodDayIcon.visibility = View.VISIBLE
+                weatherIcon.visibility = View.GONE
+                cityName.visibility = View.GONE
+                temperature.visibility = View.GONE
+                condition.visibility = View.GONE
+                quote.text = resources.getString(R.string.have_a_nice_day)
+                quote.visibility = View.VISIBLE
+            }
+        }
 
         //TODO Temporary
         // locationHelper = LocationHelper(Fragment.requireContext(), this)
@@ -94,30 +100,32 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             }
         }
 
-        viewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->
-            if (quoteStatus) {
-                binding.apply {
-                    loadingProgressBar.visibility = View.GONE
-                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
-                    goodDayIcon.visibility = View.VISIBLE
-                    weatherIcon.visibility = View.GONE
-                    cityName.visibility = View.GONE
-                    temperature.visibility = View.GONE
-                    condition.visibility = View.GONE
-                    quote.text = resources.getString(R.string.have_a_nice_day)
-                    quote.visibility = View.VISIBLE
-                }
-            } else {
-                binding.apply {
-                    weatherIcon.visibility = View.VISIBLE
-                    cityName.visibility = View.VISIBLE
-                    temperature.visibility = View.VISIBLE
-                    condition.visibility = View.VISIBLE
-                    quote.visibility = View.GONE
-                    goodDayIcon.visibility = View.GONE
-                }
-            }
-        }
+
+
+//        viewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->
+//            if (quoteStatus) {
+//                binding.apply {
+//                    loadingProgressBar.visibility = View.GONE
+//                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+//                    goodDayIcon.visibility = View.VISIBLE
+//                    weatherIcon.visibility = View.GONE
+//                    cityName.visibility = View.GONE
+//                    temperature.visibility = View.GONE
+//                    condition.visibility = View.GONE
+//                    quote.text = resources.getString(R.string.have_a_nice_day)
+//                    quote.visibility = View.VISIBLE
+//                }
+//            } else {
+//                binding.apply {
+//                    weatherIcon.visibility = View.VISIBLE
+//                    cityName.visibility = View.VISIBLE
+//                    temperature.visibility = View.VISIBLE
+//                    condition.visibility = View.VISIBLE
+//                    quote.visibility = View.GONE
+//                    goodDayIcon.visibility = View.GONE
+//                }
+//            }
+//        }
 
         binding.todayDate.setOnClickListener {
             finishedTasks = false
@@ -162,12 +170,12 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     }
 
     private fun updateNotesList(date: String, byDateCond: Boolean, finishedCond: Boolean) {
-        getChildFragmentManager().beginTransaction()
-            .replace(
-                R.id.recycler_view_fragment_container,
-                NotesListFragment.newInstance(date, byDateCond, finishedCond)
-            )
-            .commit()
+//        getChildFragmentManager().beginTransaction()
+//            .replace(
+//                R.id.recycler_view_fragment_container,
+//                NotesListFragment.newInstance(date, byDateCond, finishedCond)
+//            )
+//            .commit()
     }
 
 

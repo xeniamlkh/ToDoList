@@ -1,17 +1,17 @@
 package com.example.data.database
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-
-@Database(
-    entities = [NoteEntity::class, WeatherEntity::class],
-    version = 1,
-    exportSchema = false
-)
-abstract class AppDatabase : RoomDatabase() {
-
-    abstract fun notesDao(): NotesDao
-    abstract fun weatherDao(): WeatherDao
+//import androidx.room.Database
+//import androidx.room.RoomDatabase
+//
+//@Database(
+//    entities = [NoteEntity::class, WeatherEntity::class],
+//    version = 1,
+//    exportSchema = false
+//)
+//abstract class AppDatabase : RoomDatabase() {
+//
+//    abstract fun notesDao(): NotesDao
+//    abstract fun weatherDao(): WeatherDao
 
 //    companion object {
 //        @Volatile
@@ -31,4 +31,4 @@ abstract class AppDatabase : RoomDatabase() {
 //            }
 //        }
 //    }
-}
+//}
