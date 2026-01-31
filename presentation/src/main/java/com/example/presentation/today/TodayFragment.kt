@@ -15,6 +15,7 @@ import com.example.domain.enums.DisplayBoard
 import com.example.presentation.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentTodayBinding
+import com.example.presentation.noteslist.NotesListFragment
 import com.example.presentation.util.getTodayDate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -170,12 +171,12 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     }
 
     private fun updateNotesList(date: String, byDateCond: Boolean, finishedCond: Boolean) {
-//        getChildFragmentManager().beginTransaction()
-//            .replace(
-//                R.id.recycler_view_fragment_container,
-//                NotesListFragment.newInstance(date, byDateCond, finishedCond)
-//            )
-//            .commit()
+        getChildFragmentManager().beginTransaction()
+            .replace(
+                R.id.recycler_view_fragment_container,
+                NotesListFragment.newInstance(date, byDateCond, finishedCond)
+            )
+            .commit()
     }
 
 
