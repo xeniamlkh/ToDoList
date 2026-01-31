@@ -1,9 +1,9 @@
 package com.example.presentation.today
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.interfaces.NotesRepository
 import com.example.domain.models.Note
@@ -11,25 +11,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val TAG = "!!!!!"
 //rename to SharedViewModel
+//private val weatherCacheRepository: WeatherCacheRepository
+//    private var _weatherData = MutableLiveData<WeatherData>()
+//    val weatherData: LiveData<WeatherData> get() = _weatherData
 @HiltViewModel
 class TodayFragmentVM @Inject constructor(
-    //private val toDoListRepository: NotesRepository,
-    //private val weatherCacheRepository: WeatherCacheRepository
+    private val repository: NotesRepository,
 ) : ViewModel() {
 
     private val _calendarDate = MutableLiveData<String>()
     val calendarDate: LiveData<String> get() = _calendarDate
-
-    private val _quoteStatus = MutableLiveData<Boolean>()
-    val quoteStatus: LiveData<Boolean> get() = _quoteStatus
-
-//    private var _weatherData = MutableLiveData<WeatherData>()
-//    val weatherData: LiveData<WeatherData> get() = _weatherData
-
-    fun showQuote(value: Boolean) {
-        _quoteStatus.value = value
-    }
 
     fun setCalendarDate(calendarDate: String) {
         _calendarDate.value = calendarDate
@@ -38,7 +31,7 @@ class TodayFragmentVM @Inject constructor(
     fun createNote(date: String, checkboxStatus: Boolean, text: String) {
         val note = Note(0, date = date, checkboxStatus = checkboxStatus, text = text)
         viewModelScope.launch {
-            //toDoListRepository.insertNote(note)
+            repository.insertNote(note)
         }
     }
 

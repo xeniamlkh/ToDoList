@@ -18,7 +18,7 @@ import com.example.presentation.databinding.FragmentTodayBinding
 import com.example.presentation.util.getTodayDate
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val TAG = "!!!!!"
+
 //TODO Temporary
 //LocationHelper.LocationUpdateListener
 

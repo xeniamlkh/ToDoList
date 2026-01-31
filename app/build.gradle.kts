@@ -1,9 +1,7 @@
 import java.util.Properties
 
 plugins {
-    //id("com.android.application")
     alias(libs.plugins.androidApplication)
-    //alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kspPlugin)
     alias(libs.plugins.hiltPlugin)
 }
@@ -39,20 +37,13 @@ android {
     }
 
     buildFeatures {
-        //viewBinding = true
         buildConfig = true
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-        //sourceCompatibility = VERSION_11
-        // targetCompatibility = VERSION_11
     }
-
-//    kotlinOptions {
-//        jvmTarget = "11"
-//    }
 
     kotlin {
         compilerOptions {
@@ -62,7 +53,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
