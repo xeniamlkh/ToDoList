@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotesListVM @Inject constructor(private val repository: NotesRepository) : ViewModel() {
+class NotesVM @Inject constructor(private val repository: NotesRepository) : ViewModel() {
+
+    private var noteToDeleteId: Int? = null
 
     fun getListOfNotesByDate(date: String): LiveData<List<Note>> {
         return repository.getListOfNotesByDate(date).asLiveData()
@@ -33,5 +35,28 @@ class NotesListVM @Inject constructor(private val repository: NotesRepository) :
 
     fun deleteAllFinishedTasks() {
         viewModelScope.launch { repository.deleteAllFinishedTasks() }
+    }
+
+    fun askToDeleteNoteById(noteId: Int) {
+        noteToDeleteId = noteId
+    }
+
+    fun confirmDeleteNoteById() {
+        noteToDeleteId?.let {
+            deleteNoteById(it)
+            noteToDeleteId = null
+        }
+    }
+
+    fun deleteNoteById(noteId: Int) {
+        viewModelScope.launch {
+            repository.deleteNoteById(noteId)
+        }
+    }
+
+    fun updateNoteById(noteId: Int, noteText: String) {
+        viewModelScope.launch {
+            repository.updateNoteById(noteId, noteText)
+        }
     }
 }

@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.BaseFragment
 import com.example.presentation.databinding.FragmentEditNoteBinding
+import com.example.presentation.noteslist.NotesVM
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 private const val ARG_PARAM_NOTE_ID = "noteId"
 private const val ARG_PARAM_NOTE_STRING = "noteString"
@@ -24,7 +23,7 @@ private const val ARG_PARAM_NOTE_STRING = "noteString"
 @AndroidEntryPoint
 class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
 
-    private val viewModel: EditDeleteNoteVM by viewModels()
+    private val viewModel: NotesVM by viewModels()
 
     private lateinit var callback: OnBackPressedCallback
 
@@ -55,7 +54,8 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
                 }
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher
+            .addCallback(this, callback)
     }
 
     override fun getViewBinding(
@@ -79,12 +79,11 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
         binding.inputText.setText(noteString)
 
         binding.saveNoteBtn.setOnClickListener {
-
             if (binding.inputText.text.isNullOrEmpty()) {
-                viewModel.deleteNoteById(noteId!!)
-                showSnackbar(getString(R.string.note_deleted))
+                viewModel.deleteNoteById(noteId)
+                showSnackBar(getString(R.string.note_deleted))
             } else {
-                viewModel.updateNoteById(noteId!!, binding.inputText.text.toString())
+                viewModel.updateNoteById(noteId, binding.inputText.text.toString())
             }
 
             requireActivity()
@@ -111,7 +110,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
         }
     }
 
-    private fun showSnackbar(message: String) {
+    private fun showSnackBar(message: String) {
         Snackbar.make(
             requireActivity().findViewById(android.R.id.content),
             message, Snackbar.LENGTH_SHORT

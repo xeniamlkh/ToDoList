@@ -18,4 +18,5 @@
     <string name="all_finished_tasks">All finished tasks</string>
     <string name="all_unfinished_tasks">All unfinished tasks</string>
     <string name="d_mmm_yyyy_eeee">d MMM yyyy, EEEE</string>
+    <string name="activity_warning">Activity cannot be null</string>
 </resources>

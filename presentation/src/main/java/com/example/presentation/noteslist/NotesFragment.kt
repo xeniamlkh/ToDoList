@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
+import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Note
@@ -24,10 +26,11 @@ private const val ARG_DATE_PARAM = "date"
 private const val ARG_BY_DATE_PARAM = "checkboxStatus"
 private const val ARG_FINISHED_FLAG_PARAM = "flag"
 
+//DeleteAlertDialogListener
 @AndroidEntryPoint
 class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerViewItemClickListener {
 
-    private val viewModel: NotesListVM by viewModels()
+    private val viewModel: NotesVM by activityViewModels()
 
     private val dateParam: String by lazy {
         requireArguments().getString(ARG_DATE_PARAM) ?: ""
@@ -108,8 +111,8 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
             override fun onMenuItemClick(item: MenuItem?): Boolean {
                 when (item?.itemId) {
                     R.id.delete_btn -> {
-                        DeleteNoteAlertDialog.newInstance(noteId)
-                            .show(parentFragmentManager, "DELETE_SET")
+                        viewModel.askToDeleteNoteById(noteId)
+                        DeleteNoteAlertDialog().show(parentFragmentManager, "DELETE_NOTE")
                         return true
                     }
 
@@ -146,15 +149,18 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
         viewModel.updateNoteStatus(noteId, checkboxStatus)
     }
 
+//    override fun onDeleteConfirmation(noteId: Int) {
+//        TODO("Not yet implemented")
+//    }
+
     companion object {
-        @JvmStatic
         fun newInstance(dateParam: String, byDate: Boolean, finished: Boolean) =
             NotesListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_DATE_PARAM, dateParam)
-                    putBoolean(ARG_BY_DATE_PARAM, byDate)
-                    putBoolean(ARG_FINISHED_FLAG_PARAM, finished)
-                }
+                arguments = bundleOf(
+                    ARG_DATE_PARAM to dateParam,
+                    ARG_BY_DATE_PARAM to byDate,
+                    ARG_FINISHED_FLAG_PARAM to finished
+                )
             }
     }
 }

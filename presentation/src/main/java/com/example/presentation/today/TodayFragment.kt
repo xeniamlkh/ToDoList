@@ -35,7 +35,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
 
     private val boardParam: DisplayBoard by lazy {
         DisplayBoard.valueOf(
-            requireArguments().getString(ARG_BOARD_PARAM)!!
+            requireArguments().getString(ARG_BOARD_PARAM) ?: ""
         )
     }
 

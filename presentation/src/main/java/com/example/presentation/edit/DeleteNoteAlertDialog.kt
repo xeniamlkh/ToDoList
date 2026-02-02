@@ -5,34 +5,24 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import com.example.presentation.noteslist.NotesVM
 import com.google.android.material.snackbar.Snackbar
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-private const val ARG_PARAM_NOTE_ID = "noteId"
+@AndroidEntryPoint
+class DeleteNoteAlertDialog() : DialogFragment() {
 
-class DeleteNoteAlertDialog : DialogFragment() {
-
-    //TODO Inject?
-    private val viewModel: EditDeleteNoteVM by viewModels()
-
-    private var noteId: Int = -1
+    private val viewModel: NotesVM by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        arguments?.let {
-            noteId = it.getInt(ARG_PARAM_NOTE_ID)
-        }
-
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setMessage(
-                getString(R.string.warning_delete_note)
-            )
+            builder
+                .setMessage(getString(R.string.warning_delete_note))
                 .setPositiveButton(getString(R.string.delete_cap)) { _, _ ->
-                    if (noteId >= 0) {
-                        viewModel.deleteNoteById(noteId)
-                    }
+                    viewModel.confirmDeleteNoteById()
 
                     Snackbar.make(
                         requireActivity().findViewById(android.R.id.content),
@@ -42,14 +32,6 @@ class DeleteNoteAlertDialog : DialogFragment() {
                 }
                 .setNegativeButton(getString(R.string.cancel_cap)) { _, _ -> }
             builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
-    companion object {
-        fun newInstance(noteId: Int) = DeleteNoteAlertDialog().apply {
-            arguments = Bundle().apply {
-                putInt(ARG_PARAM_NOTE_ID, noteId)
-            }
-        }
+        } ?: throw IllegalStateException(getString(R.string.activity_warning))
     }
 }
