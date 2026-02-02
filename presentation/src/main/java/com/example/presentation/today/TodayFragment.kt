@@ -74,11 +74,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             }
         }
 
-        //TODO Temporary
-        // locationHelper = LocationHelper(Fragment.requireContext(), this)
-        // getLocation()
-        //locationHelper = LocationHelper(this, this)
-
         if (savedInstanceState != null) {
             val savedDate = savedInstanceState.getString("currentDate")
             actualDate = savedDate
@@ -183,22 +178,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             )
             .commit()
     }
-
-
-    //TODO Temporary
-    //why request permissions again if already did it in the Activity?
-//    private fun getLocation() {
-//        if (ActivityCompat.checkSelfPermission(
-//                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            return
-//        } else {
-//            locationHelper.startLocationUpdates()
-//        }
-//    }
 
 //    override fun onLocationUpdated(location: Location) {
 //        val latitude = location.latitude.toString()

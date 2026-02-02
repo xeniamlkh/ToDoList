@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.data.network.WeatherService
 import com.example.domain.enums.DisplayBoard
 import com.example.domain.interfaces.LocationService
 import com.example.domain.models.Coordinates
@@ -24,16 +25,18 @@ private const val TAG = "!!!!!"
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
 
+    private val apiKey = BuildConfig.API_KEY
+
     @Inject
-    lateinit var locationService: LocationService
+    private lateinit var locationService: LocationService
+
+    @Inject
+    private lateinit var weatherService: WeatherService
 
     //private lateinit var boardArgument: DisplayBoard
 
     private val permissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts
-                .RequestMultiplePermissions()
-        ) { result ->
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
 
             val coarseLocationPermission = result
                 .getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false)
@@ -151,11 +154,21 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
     private fun getLocation() {
         lifecycleScope.launch {
             locationService.getLastLocation()?.let { lastLocation ->
+                getWeatherForecast()
                 Log.d(TAG, "getLocation: last location = $lastLocation")
             } ?: locationService.getCurrentLocation()?.let { currentLocation ->
                 Log.d(TAG, "getLocation: current location = $currentLocation")
             }
         }
+    }
+
+    private fun getWeatherForecast(lat: String, lon: String) {
+        weatherService.getCurrentWeather(
+            lat = TODO(),
+            lon = TODO(),
+            apiKey = TODO(),
+            units = TODO()
+        )
     }
 
     //TODO pass a quote or a weather forecast

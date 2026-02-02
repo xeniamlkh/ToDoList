@@ -51,5 +51,9 @@ dependencies {
     implementation(libs.gms.location.service)
     implementation(libs.coroutines.play.services)
 
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
     implementation(project(":domain"))
 }

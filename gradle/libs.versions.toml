@@ -17,6 +17,7 @@ hiltVersion = "2.59"
 roomVersion = "2.8.4"
 gmsVersion = "21.1.0"
 coroutinesPlayServicesVersion = "1.10.2"
+retrofitVersion = "3.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -39,6 +40,8 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVer
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
 gms-location-service = { module = "com.google.android.gms:play-services-location", version.ref = "gmsVersion" }
 coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutinesPlayServicesVersion" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofitVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
