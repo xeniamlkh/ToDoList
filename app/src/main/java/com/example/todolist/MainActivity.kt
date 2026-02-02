@@ -10,15 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.data.network.WeatherService
-import com.example.domain.enums.DisplayBoard
 import com.example.domain.interfaces.LocationService
-import com.example.domain.models.Coordinates
+import com.example.domain.interfaces.WeatherService
+import com.example.domain.models.WeatherData
 import com.example.presentation.today.TodayFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 private const val TAG = "!!!!!"
 
@@ -28,10 +26,10 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
     private val apiKey = BuildConfig.API_KEY
 
     @Inject
-    private lateinit var locationService: LocationService
+    lateinit var locationService: LocationService
 
     @Inject
-    private lateinit var weatherService: WeatherService
+    lateinit var weatherService: WeatherService
 
     //private lateinit var boardArgument: DisplayBoard
 
@@ -53,7 +51,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
 //            }
 
             if ((coarseLocationPermission) && (fineLocationPermission)) {
-                //Log.d(TAG, "1")
+                Log.d(TAG, "1")
                 //DisplayBoard.WEATHER
                 //TODO Get location
                 //TODO Get a forecast
@@ -104,6 +102,7 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
                 //TODO Get location
                 //TODO Get a forecast
                 //TODO Start a fragment with a weather forecast
+                Log.d(TAG, "checkLocationPermissions: 2")
                 getLocation()
             }
 
@@ -154,21 +153,32 @@ class MainActivity : AppCompatActivity(), PermissionRationaleDialogListener {
     private fun getLocation() {
         lifecycleScope.launch {
             locationService.getLastLocation()?.let { lastLocation ->
-                getWeatherForecast()
                 Log.d(TAG, "getLocation: last location = $lastLocation")
+                getWeatherForecast(lat = lastLocation.lat.toString(), lon = lastLocation.lon.toString())
             } ?: locationService.getCurrentLocation()?.let { currentLocation ->
                 Log.d(TAG, "getLocation: current location = $currentLocation")
+                getWeatherForecast(lat = currentLocation.lat.toString(), lon = currentLocation.lon.toString())
             }
         }
     }
 
     private fun getWeatherForecast(lat: String, lon: String) {
-        weatherService.getCurrentWeather(
-            lat = TODO(),
-            lon = TODO(),
-            apiKey = TODO(),
-            units = TODO()
-        )
+        lifecycleScope.launch {
+            val forecast: WeatherData? = weatherService.getCurrentWeather(
+                lat = lat,
+                lon = lon,
+                apiKey = apiKey,
+                units = "metric"
+            )
+
+            supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.today_fragment_container,
+                    TodayFragment.newInstance(forecast)
+                )
+                .commit()
+            Log.d(TAG, "getWeatherForecast: forecast = $forecast")
+        }
     }
 
     //TODO pass a quote or a weather forecast

@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.example.data.repositories
 
 import com.example.domain.interfaces.NotesRepository
 import dagger.Binds

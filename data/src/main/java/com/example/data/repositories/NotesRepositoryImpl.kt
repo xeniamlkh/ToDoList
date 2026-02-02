@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.example.data.repositories
 
 import com.example.data.database.NotesDao
 import com.example.data.database.toEntity

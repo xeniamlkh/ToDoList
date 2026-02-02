@@ -4,8 +4,7 @@ import com.example.domain.models.WeatherData
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
-interface WeatherService {
+interface WeatherApi {
     @GET("weather")
     suspend fun getCurrentWeather(
         @Query("lat") lat: String,

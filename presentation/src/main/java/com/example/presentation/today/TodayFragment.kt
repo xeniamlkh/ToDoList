@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import com.example.domain.enums.DisplayBoard
+import com.example.domain.models.WeatherData
 import com.example.presentation.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentTodayBinding
@@ -24,6 +24,9 @@ import dagger.hilt.android.AndroidEntryPoint
 //LocationHelper.LocationUpdateListener
 
 private const val ARG_BOARD_PARAM = "board_parameter"
+private const val ARG_WEATHER_TEMP = "current_temperature"
+private const val ARG_WEATHER_ENV = "current_environment"
+private const val ARG_CITY_NAME = "city_name"
 
 @AndroidEntryPoint
 class TodayFragment : BaseFragment<FragmentTodayBinding>() {
@@ -33,10 +36,22 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     //TODO Temporary
     //private lateinit var locationHelper: LocationHelper
 
-    private val boardParam: DisplayBoard by lazy {
-        DisplayBoard.valueOf(
-            requireArguments().getString(ARG_BOARD_PARAM) ?: ""
-        )
+//    private val boardParam: DisplayBoard by lazy {
+//        DisplayBoard.valueOf(
+//            requireArguments().getString(ARG_BOARD_PARAM) ?: ""
+//        )
+//    }
+
+    private val city: String? by lazy {
+        requireArguments().getString(ARG_CITY_NAME) ?: ""
+    }
+
+    private val temperature: Float? by lazy {
+        requireArguments().getFloat(ARG_WEATHER_TEMP)
+    }
+
+    private val environment: String? by lazy {
+        requireArguments().getString(ARG_WEATHER_ENV) ?: ""
     }
 
     private var finishedTasks: Boolean = false
@@ -52,27 +67,32 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated: boardParam = $boardParam")
 
-        when (boardParam) {
-            DisplayBoard.QUOTE -> {
-                binding.apply {
-                    loadingProgressBar.visibility = View.GONE
-                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
-                    goodDayIcon.visibility = View.VISIBLE
-                    weatherIcon.visibility = View.GONE
-                    cityName.visibility = View.GONE
-                    temperature.visibility = View.GONE
-                    condition.visibility = View.GONE
-                    quote.text = resources.getString(R.string.have_a_nice_day)
-                    quote.visibility = View.VISIBLE
-                }
-            }
+        Log.d(TAG, "onViewCreated: city = $city")
+        Log.d(TAG, "onViewCreated: temperature = $temperature")
+        Log.d(TAG, "onViewCreated: environment = $environment")
+        
+       // Log.d(TAG, "onViewCreated: boardParam = $boardParam")
 
-            DisplayBoard.WEATHER -> {
-
-            }
-        }
+//        when (boardParam) {
+//            DisplayBoard.QUOTE -> {
+//                binding.apply {
+//                    loadingProgressBar.visibility = View.GONE
+//                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+//                    goodDayIcon.visibility = View.VISIBLE
+//                    weatherIcon.visibility = View.GONE
+//                    cityName.visibility = View.GONE
+//                    temperature.visibility = View.GONE
+//                    condition.visibility = View.GONE
+//                    quote.text = resources.getString(R.string.have_a_nice_day)
+//                    quote.visibility = View.VISIBLE
+//                }
+//            }
+//
+//            DisplayBoard.WEATHER -> {
+//
+//            }
+//        }
 
         if (savedInstanceState != null) {
             val savedDate = savedInstanceState.getString("currentDate")
@@ -318,10 +338,13 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     }
 
     companion object {
-        fun newInstance(boardParam: DisplayBoard) =
+        fun newInstance(forecast: WeatherData?) =
             TodayFragment().apply {
+                //if null -> quote else weather
                 arguments = bundleOf(
-                    ARG_BOARD_PARAM to boardParam.name
+                    ARG_CITY_NAME to forecast?.name,
+                    ARG_WEATHER_TEMP to forecast?.main?.temp,
+                    ARG_WEATHER_ENV to forecast?.weather?.first()?.main
                 )
             }
     }

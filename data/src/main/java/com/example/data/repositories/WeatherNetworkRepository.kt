@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.example.data.repositories
 
 //import com.example.data.network.WeatherApiService
 //import com.example.data.network.WeatherData
