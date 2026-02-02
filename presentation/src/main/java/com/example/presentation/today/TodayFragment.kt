@@ -54,17 +54,23 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated: boardParam = $boardParam")
 
-        if (boardParam == DisplayBoard.QUOTE) {
-            binding.apply {
-                loadingProgressBar.visibility = View.GONE
-                goodDayIcon.setImageResource(R.drawable.ic_nice_day)
-                goodDayIcon.visibility = View.VISIBLE
-                weatherIcon.visibility = View.GONE
-                cityName.visibility = View.GONE
-                temperature.visibility = View.GONE
-                condition.visibility = View.GONE
-                quote.text = resources.getString(R.string.have_a_nice_day)
-                quote.visibility = View.VISIBLE
+        when (boardParam) {
+            DisplayBoard.QUOTE -> {
+                binding.apply {
+                    loadingProgressBar.visibility = View.GONE
+                    goodDayIcon.setImageResource(R.drawable.ic_nice_day)
+                    goodDayIcon.visibility = View.VISIBLE
+                    weatherIcon.visibility = View.GONE
+                    cityName.visibility = View.GONE
+                    temperature.visibility = View.GONE
+                    condition.visibility = View.GONE
+                    quote.text = resources.getString(R.string.have_a_nice_day)
+                    quote.visibility = View.VISIBLE
+                }
+            }
+
+            DisplayBoard.WEATHER -> {
+
             }
         }
 
@@ -100,7 +106,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
                 }
             }
         }
-
 
 
 //        viewModel.quoteStatus.observe(this.viewLifecycleOwner) { quoteStatus ->

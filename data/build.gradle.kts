@@ -47,5 +47,9 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
 
+    //GMS
+    implementation(libs.gms.location.service)
+    implementation(libs.coroutines.play.services)
+
     implementation(project(":domain"))
 }

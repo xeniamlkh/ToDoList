@@ -15,6 +15,8 @@ constraintlayout = "2.2.1"
 kspVersion = "2.3.4"
 hiltVersion = "2.59"
 roomVersion = "2.8.4"
+gmsVersion = "21.1.0"
+coroutinesPlayServicesVersion = "1.10.2"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -35,6 +37,8 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+gms-location-service = { module = "com.google.android.gms:play-services-location", version.ref = "gmsVersion" }
+coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutinesPlayServicesVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
