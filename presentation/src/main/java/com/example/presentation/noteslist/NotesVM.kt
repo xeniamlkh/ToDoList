@@ -37,11 +37,11 @@ class NotesVM @Inject constructor(private val repository: NotesRepository) : Vie
         viewModelScope.launch { repository.deleteAllFinishedTasks() }
     }
 
-    fun askToDeleteNoteById(noteId: Int) {
+    fun setNoteIdToDelete(noteId: Int) {
         noteToDeleteId = noteId
     }
 
-    fun confirmDeleteNoteById() {
+    fun confirmDeleteNote() {
         noteToDeleteId?.let {
             deleteNoteById(it)
             noteToDeleteId = null

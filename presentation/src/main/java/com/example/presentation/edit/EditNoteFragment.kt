@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.BaseFragment
 import com.example.presentation.databinding.FragmentEditNoteBinding
@@ -23,8 +23,9 @@ private const val ARG_PARAM_NOTE_STRING = "noteString"
 @AndroidEntryPoint
 class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
 
-    private val viewModel: NotesVM by viewModels()
+    private val viewModel: NotesVM by activityViewModels()
 
+    //TODO Check OnBackPressedCallback
     private lateinit var callback: OnBackPressedCallback
 
     private val noteId: Int by lazy {
@@ -68,6 +69,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO Check views' visibility - why if return to the previous screen?
         requireActivity()
             .findViewById<TextInputLayout>(R.id.input).visibility = View.GONE
         requireActivity()

@@ -22,7 +22,7 @@ class DeleteNoteAlertDialog() : DialogFragment() {
             builder
                 .setMessage(getString(R.string.warning_delete_note))
                 .setPositiveButton(getString(R.string.delete_cap)) { _, _ ->
-                    viewModel.confirmDeleteNoteById()
+                    viewModel.confirmDeleteNote()
 
                     Snackbar.make(
                         requireActivity().findViewById(android.R.id.content),

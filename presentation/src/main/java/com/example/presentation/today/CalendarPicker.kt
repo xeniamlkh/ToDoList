@@ -8,9 +8,11 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.presentation.R
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+@AndroidEntryPoint
 class CalendarPicker : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private val viewModel: TodayFragmentVM by activityViewModels()

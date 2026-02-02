@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Note
 import com.example.presentation.BaseFragment
@@ -26,7 +25,6 @@ private const val ARG_DATE_PARAM = "date"
 private const val ARG_BY_DATE_PARAM = "checkboxStatus"
 private const val ARG_FINISHED_FLAG_PARAM = "flag"
 
-//DeleteAlertDialogListener
 @AndroidEntryPoint
 class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerViewItemClickListener {
 
@@ -111,7 +109,7 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
             override fun onMenuItemClick(item: MenuItem?): Boolean {
                 when (item?.itemId) {
                     R.id.delete_btn -> {
-                        viewModel.askToDeleteNoteById(noteId)
+                        viewModel.setNoteIdToDelete(noteId)
                         DeleteNoteAlertDialog().show(parentFragmentManager, "DELETE_NOTE")
                         return true
                     }
@@ -148,10 +146,6 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
     override fun checkboxClick(noteId: Int, checkboxStatus: Boolean) {
         viewModel.updateNoteStatus(noteId, checkboxStatus)
     }
-
-//    override fun onDeleteConfirmation(noteId: Int) {
-//        TODO("Not yet implemented")
-//    }
 
     companion object {
         fun newInstance(dateParam: String, byDate: Boolean, finished: Boolean) =
