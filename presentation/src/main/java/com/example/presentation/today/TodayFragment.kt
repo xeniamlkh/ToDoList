@@ -2,20 +2,15 @@ package com.example.presentation.today
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.domain.interfaces.WeatherService
-import com.example.domain.models.WeatherData
 import com.example.presentation.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentTodayBinding
@@ -24,9 +19,6 @@ import com.example.presentation.util.getTodayDate
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-
-private const val TAG = "!!!!!"
 
 @AndroidEntryPoint
 class TodayFragment : BaseFragment<FragmentTodayBinding>() {
@@ -151,7 +143,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
                 binding.condition.text = ""
             }
 
-            //TODO add icons + add empty icon for no condition (else branch)
             when (weatherConditions) {
                 "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
                 "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
@@ -230,7 +221,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     }
 
     private fun checkLocationPermissions() {
-        Log.d(TAG, "checkLocationPermissions: ...")
         when {
             ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -286,51 +276,3 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
         outState.putBoolean("unfinishedTasks", unfinishedTasks)
     }
 }
-
-
-//    private fun getCachedWeather(weatherCache: WeatherEntity) {
-//        if (weatherCache.cityName.isEmpty()) {
-//            binding.apply {
-//                loadingProgressBar.visibility = View.GONE
-//                goodDayIcon.setImageResource(R.drawable.ic_nice_day)
-//                goodDayIcon.visibility = View.VISIBLE
-//                weatherIcon.visibility = View.GONE
-//                cityName.visibility = View.GONE
-//                temperature.visibility = View.GONE
-//                condition.visibility = View.GONE
-//                quote.text = Fragment.getResources.getString(R.string.have_a_nice_day)
-//                quote.visibility = View.VISIBLE
-//            }
-//        } else {
-//            binding.apply {
-//                loadingProgressBar.visibility = View.GONE
-//                goodDayIcon.visibility = View.GONE
-//                weatherIcon.visibility = View.VISIBLE
-//                cityName.visibility = View.VISIBLE
-//                temperature.visibility = View.VISIBLE
-//                condition.visibility = View.VISIBLE
-//                quote.visibility = View.GONE
-//
-//            }
-//
-//            val cityName = weatherCache.cityName
-//            val weatherConditions = weatherCache.weatherConditions
-//            val temperature = weatherCache.temperature
-//            val stringBuilder = StringBuilder()
-//            stringBuilder.append(temperature.toString()).append(" \u2103")
-//
-//            binding.cityName.text = cityName
-//            binding.condition.text = weatherConditions
-//            binding.temperature.text = stringBuilder.toString()
-//
-//            when (weatherConditions) {
-//                "Thunderstorm" -> binding.weatherIcon.setImageResource(R.drawable.ic_11d)
-//                "Drizzle" -> binding.weatherIcon.setImageResource(R.drawable.ic_09d)
-//                "Rain" -> binding.weatherIcon.setImageResource(R.drawable.ic_10d)
-//                "Snow" -> binding.weatherIcon.setImageResource(R.drawable.ic_13d)
-//                "Clear" -> binding.weatherIcon.setImageResource(R.drawable.ic_01d)
-//                "Clouds" -> binding.weatherIcon.setImageResource(R.drawable.ic_03d)
-//                else -> binding.weatherIcon.setImageResource(R.drawable.ic_50d)
-//            }
-//        }
-//    }

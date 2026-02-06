@@ -1,6 +1,5 @@
 package com.example.presentation.today
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,11 +17,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
-
-private const val TAG = "!!!!!"
-
-//rename to SharedViewModel
-//private val weatherCacheRepository: WeatherCacheRepository
 
 @HiltViewModel
 class TodayFragmentVM @Inject constructor(
@@ -47,9 +41,6 @@ class TodayFragmentVM @Inject constructor(
 
     private val _quoteStatus = MutableLiveData<Boolean>()
     val quoteStatus: LiveData<Boolean> get() = _quoteStatus
-
-    private var _weatherData = MutableLiveData<WeatherData>()
-    val weatherData: LiveData<WeatherData> get() = _weatherData
 
     private var _weatherConditions = MutableLiveData<String>()
     val weatherConditions: LiveData<String> get() = _weatherConditions
@@ -97,7 +88,7 @@ class TodayFragmentVM @Inject constructor(
     }
 
     private suspend fun getLocation(): Coordinates? {
-        val coordinates = locationService.getCurrentLocation() ?: locationService.getLastLocation()
+        val coordinates = locationService.getLastLocation() ?: locationService.getCurrentLocation()
         return coordinates
     }
 
@@ -115,13 +106,11 @@ class TodayFragmentVM @Inject constructor(
                     _weatherConditions.value = forecast.weather[0].main
                     _city.value = forecast.name
                     _temperature.value = forecast.main.temp.roundToInt()
-                    _weatherData.value = forecast
                     _locationError.value = false
                     _networkError.value = false
                     _quoteStatus.value = false
                 }
             } else {
-                Log.d(TAG, "getWeatherForecast: else...")
                 withContext(Dispatchers.Main) {
                     _networkError.value = true
                     _quoteStatus.value = true
@@ -129,73 +118,10 @@ class TodayFragmentVM @Inject constructor(
             }
 
         } catch (_: Exception) {
-            Log.d(TAG, "getWeatherForecast: catch")
             withContext(Dispatchers.Main) {
                 _networkError.value = true
                 _quoteStatus.value = true
             }
         }
     }
-
-    //TODO Temporary
-//    private fun writeOrUpdateWeatherDataCache(
-//        lat: String,
-//        lon: String,
-//        cityName: String?,
-//        weatherConditions: String?,
-//        temperature: Int?
-//    ) {
-//        if (cityName != null && weatherConditions != null && temperature != null) {
-//            val weatherEntity = WeatherEntity(
-//                0,
-//                lat,
-//                lon,
-//                cityName,
-//                weatherConditions,
-//                temperature
-//            )
-//
-//
-//            viewModelScope.launch {
-//                val weatherDataCache = weatherCacheRepository.getWeatherDataCache().firstOrNull()
-//
-//                if (weatherDataCache == null) {
-//                    writeWeatherDataCache(weatherEntity)
-//                } else {
-//                    updateWeatherDataCacheById(
-//                        1,
-//                        lat,
-//                        lon,
-//                        weatherEntity.cityName,
-//                        weatherEntity.weatherConditions,
-//                        weatherEntity.temperature
-//                    )
-//                }
-//            }
-//        }
-//    }
-
-    //TODO Temporary
-//    private suspend fun writeWeatherDataCache(weatherEntity: WeatherEntity) {
-//        weatherCacheRepository.writeWeatherDataCache(weatherEntity)
-//    }
-
-    //TODO Temporary
-//    private suspend fun updateWeatherDataCacheById(
-//        weatherEntityId: Int,
-//        lat: String,
-//        lon: String,
-//        cityName: String,
-//        weather: String,
-//        temperature: Int
-//    ) {
-//        weatherCacheRepository.updateWeatherDataCacheById(
-//            lat,
-//            lon,
-//            weatherEntityId,
-//            cityName,
-//            weather,
-//            temperature
-//        )
-//    }
 }
