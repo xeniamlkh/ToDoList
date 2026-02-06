@@ -64,14 +64,14 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
                     if (notesList.isNotEmpty()) {
                         binding.deleteFloatBtn.visibility = View.VISIBLE
                     } else {
-                        showSnackBar(getString(R.string.no_finished_tasks))
+                        showSnackBar(R.string.no_finished_tasks)
                     }
                 }
             } else {
                 viewModel.showAllUnfinishedTasks().observe(this.viewLifecycleOwner) { notesList ->
                     createUpdateRecyclerView(notesList)
                     if (notesList.isEmpty()) {
-                        showSnackBar(getString(R.string.all_work_is_done))
+                        showSnackBar(R.string.all_work_is_done)
                     }
                 }
             }
@@ -83,10 +83,10 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
         }
     }
 
-    private fun showSnackBar(message: String) {
+    private fun showSnackBar(stringId: Int) {
         Snackbar.make(
             requireActivity().findViewById(android.R.id.content),
-            message, Snackbar.LENGTH_SHORT
+            getString(stringId), Snackbar.LENGTH_SHORT
         )
             .show()
     }

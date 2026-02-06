@@ -83,7 +83,7 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
         binding.saveNoteBtn.setOnClickListener {
             if (binding.inputText.text.isNullOrEmpty()) {
                 viewModel.deleteNoteById(noteId)
-                showSnackBar(getString(R.string.note_deleted))
+                showSnackBar(R.string.note_deleted)
             } else {
                 viewModel.updateNoteById(noteId, binding.inputText.text.toString())
             }
@@ -112,10 +112,10 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
         }
     }
 
-    private fun showSnackBar(message: String) {
+    private fun showSnackBar(stringId: Int) {
         Snackbar.make(
             requireActivity().findViewById(android.R.id.content),
-            message, Snackbar.LENGTH_SHORT
+            getString(stringId), Snackbar.LENGTH_SHORT
         ).show()
     }
 

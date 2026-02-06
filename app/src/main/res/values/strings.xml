@@ -1,8 +1,4 @@
 <resources>
     <string name="app_name">To Do List</string>
-    <string name="rationale_title">To get a weather forecast please provide location permissions</string>
-    <string name="rationale_message">\nIf you don\'t want to see this message in the future click \"OK\" and then \"Don\'t allow\"</string>
-    <string name="ok_btn">OK</string>
-    <string name="decline_btn">DECLINE</string>
-    <string name="activity_warning">Activity cannot be null</string>
+
 </resources>

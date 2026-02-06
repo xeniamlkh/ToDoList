@@ -1,14 +1,10 @@
-package com.example.data.repositories
+package com.example.data.network
 
-import com.example.data.network.WeatherApi
 import com.example.domain.interfaces.WeatherService
 import com.example.domain.models.WeatherData
 import javax.inject.Inject
 
 class WeatherServiceImpl @Inject constructor(private val weatherApi: WeatherApi): WeatherService {
-
-//    @Inject
-//    lateinit var weatherApi: WeatherApi
 
     override suspend fun getCurrentWeather(
         lat: String,

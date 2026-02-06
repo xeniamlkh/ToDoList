@@ -1,4 +1,4 @@
-package com.example.data.repositories
+package com.example.data.network
 
 import com.example.domain.interfaces.WeatherService
 import dagger.Binds

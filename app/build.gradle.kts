@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kspPlugin)
@@ -18,12 +16,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        val properties = Properties()
-        properties.load(project.rootProject.file("apikey.properties").inputStream())
-
-        val apiKey = properties.getProperty("API_KEY") ?: ""
-        buildConfigField(type = "String", name = "API_KEY", value = apiKey)
     }
 
     buildTypes {

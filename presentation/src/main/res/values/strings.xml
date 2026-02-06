@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">To Do List</string>
+    <string name="rationale_title">To get a weather forecast please provide location permissions</string>
+    <string name="rationale_message">\nIf you don\'t want to see this message in the future click \"OK\" and then \"Don\'t allow\"</string>
+    <string name="ok_btn">OK</string>
+    <string name="decline_btn">DECLINE</string>
     <string name="dots">⋮</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
@@ -19,4 +23,6 @@
     <string name="all_unfinished_tasks">All unfinished tasks</string>
     <string name="d_mmm_yyyy_eeee">d MMM yyyy, EEEE</string>
     <string name="activity_warning">Activity cannot be null</string>
+    <string name="network_error">No internet access</string>
+    <string name="gps_location_error">Can not find your location</string>
 </resources>
