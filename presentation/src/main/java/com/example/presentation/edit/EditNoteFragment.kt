@@ -1,6 +1,5 @@
 package com.example.presentation.edit
 
-import com.example.presentation.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.presentation.BaseFragment
+import com.example.presentation.R
 import com.example.presentation.databinding.FragmentEditNoteBinding
 import com.example.presentation.noteslist.NotesVM
 import com.google.android.material.snackbar.Snackbar

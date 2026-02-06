@@ -3,8 +3,8 @@ package com.example.data.repositories
 import com.example.data.database.NotesDao
 import com.example.data.database.toEntity
 import com.example.data.database.toNote
-import com.example.domain.models.Note
 import com.example.domain.interfaces.NotesRepository
+import com.example.domain.models.Note
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
