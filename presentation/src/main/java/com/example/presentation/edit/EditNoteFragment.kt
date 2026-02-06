@@ -25,7 +25,6 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
 
     private val viewModel: NotesVM by activityViewModels()
 
-    //TODO Check OnBackPressedCallback
     private lateinit var callback: OnBackPressedCallback
 
     private val noteId: Int by lazy {
@@ -69,7 +68,6 @@ class EditNoteFragment : BaseFragment<FragmentEditNoteBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO Check views' visibility - why if return to the previous screen?
         requireActivity()
             .findViewById<TextInputLayout>(R.id.input).visibility = View.GONE
         requireActivity()

@@ -64,6 +64,7 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             binding.todayDate.text = todayDate
 
             updateNotesList(todayDate, byDateCond = true, finishedCond = false)
+
         } else {
             val savedDate = savedInstanceState.getString("currentDate")
             actualDate = savedDate

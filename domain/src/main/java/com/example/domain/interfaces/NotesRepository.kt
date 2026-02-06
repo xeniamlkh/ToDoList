@@ -9,7 +9,6 @@ interface NotesRepository {
 
     suspend fun deleteNoteById(noteId: Int)
 
-    //TODO date change from String to Long?
     fun getListOfNotesByDate(date: String): Flow<List<Note>>
 
     suspend fun updateNoteById(noteId: Int, noteText: String)

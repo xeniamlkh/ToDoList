@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Note
 import com.example.presentation.databinding.NoteItemBinding
 
-//TODO item style move into styles?
 interface RecyclerViewItemClickListener {
     fun onMenuClick(menuItem: View, noteId: Int, noteText: String)
     fun checkboxClick(noteId: Int, checkboxStatus: Boolean)
