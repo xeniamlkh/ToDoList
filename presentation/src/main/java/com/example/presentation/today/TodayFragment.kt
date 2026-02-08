@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.domain.enums.SortCriteria
 import com.example.presentation.BaseFragment
 import com.example.presentation.R
 import com.example.presentation.databinding.FragmentTodayBinding
@@ -23,8 +24,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TodayFragment : BaseFragment<FragmentTodayBinding>() {
 
-    private var finishedTasks: Boolean = false
-    private var unfinishedTasks: Boolean = false
     private var actualDate: String? = null
 
     private val viewModel: TodayFragmentVM by activityViewModels()
@@ -63,15 +62,11 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             val todayDate = requireContext().getTodayDate()
             binding.todayDate.text = todayDate
 
-            updateNotesList(todayDate, byDateCond = true, finishedCond = false)
-
+            viewModel.setSortingCriteria(SortCriteria.DATE)
         } else {
             val savedDate = savedInstanceState.getString("currentDate")
             actualDate = savedDate
             binding.todayDate.text = savedDate
-
-            finishedTasks = savedInstanceState.getBoolean("finishedTasks")
-            unfinishedTasks = savedInstanceState.getBoolean("unfinishedTasks")
         }
 
         viewModel.permissionConfirmationStatus.observe(this.viewLifecycleOwner) { permissionStatus ->
@@ -123,20 +118,6 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             }
         }
 
-        viewModel.calendarDate.observe(this.viewLifecycleOwner) { calendarDate ->
-            binding.todayDate.text = calendarDate
-
-            if (savedInstanceState != null) {
-                if (!actualDate.equals(calendarDate)) {
-                    updateNotesList(calendarDate, byDateCond = true, finishedCond = false)
-                }
-            } else {
-                if (!finishedTasks && !unfinishedTasks) {
-                    updateNotesList(calendarDate, byDateCond = true, finishedCond = false)
-                }
-            }
-        }
-
         viewModel.weatherConditions.observe(this.viewLifecycleOwner) { weatherConditions ->
             if (weatherConditions.isNotEmpty()) {
                 binding.condition.text = weatherConditions
@@ -169,17 +150,42 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
             binding.temperature.text = stringBuilder.toString()
         }
 
+        viewModel.calendarDate.observe(this.viewLifecycleOwner) { calendarDate ->
+            actualDate = calendarDate
+            binding.todayDate.text = calendarDate
+        }
+
+        viewModel.sortCriteria.observe(this.viewLifecycleOwner) { sortCriteria ->
+            when (sortCriteria) {
+                SortCriteria.DATE -> {
+                    updateNotesList(
+                        sortedBy = SortCriteria.DATE,
+                        date = actualDate
+                    )
+                }
+
+                SortCriteria.UNFINISHED -> {
+                    updateNotesList(
+                        sortedBy = SortCriteria.UNFINISHED,
+                        date = actualDate
+                    )
+                }
+
+                SortCriteria.COMPLETED -> {
+                    updateNotesList(
+                        sortedBy = SortCriteria.COMPLETED,
+                        date = actualDate
+                    )
+                }
+            }
+        }
 
         binding.todayDate.setOnClickListener {
-            finishedTasks = false
-            unfinishedTasks = false
             binding.warningNoteRequired.visibility = View.GONE
             CalendarPicker().show(getParentFragmentManager(), "CALENDAR_PICKER")
         }
 
         binding.saveNoteBtn.setOnClickListener {
-            finishedTasks = false
-            unfinishedTasks = false
             if (binding.inputText.text.isNullOrEmpty()) {
                 binding.warningNoteRequired.visibility = View.VISIBLE
             } else {
@@ -188,35 +194,34 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
                     binding.todayDate.text.toString(), false,
                     binding.inputText.text.toString()
                 )
-                updateNotesList(
-                    binding.todayDate.text.toString(),
-                    byDateCond = true,
-                    finishedCond = false
-                )
+                actualDate = binding.todayDate.text.toString()
+                viewModel.setSortingCriteria(SortCriteria.DATE)
             }
             binding.inputText.text?.clear()
         }
 
         binding.showFinishedBtn.setOnClickListener {
-            finishedTasks = true
-            unfinishedTasks = false
             binding.warningNoteRequired.visibility = View.GONE
-            updateNotesList("00 May 0000, Sunday", byDateCond = false, finishedCond = true)
+            viewModel.setSortingCriteria(SortCriteria.COMPLETED)
         }
 
         binding.showUnfinishedBtn.setOnClickListener {
-            unfinishedTasks = true
-            finishedTasks = false
             binding.warningNoteRequired.visibility = View.GONE
-            updateNotesList(date = "00 May 0000, Sunday", byDateCond = false, finishedCond = false)
+            viewModel.setSortingCriteria(SortCriteria.UNFINISHED)
         }
     }
 
-    private fun updateNotesList(date: String, byDateCond: Boolean, finishedCond: Boolean) {
+    private fun updateNotesList(
+        sortedBy: SortCriteria,
+        date: String?
+    ) {
         getChildFragmentManager().beginTransaction()
             .replace(
                 R.id.recycler_view_fragment_container,
-                NotesListFragment.newInstance(date, byDateCond, finishedCond)
+                NotesListFragment.newInstance(
+                    sortCriteria = sortedBy.name,
+                    date = date
+                )
             )
             .commit()
     }
@@ -273,7 +278,5 @@ class TodayFragment : BaseFragment<FragmentTodayBinding>() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("currentDate", binding.todayDate.text.toString())
-        outState.putBoolean("finishedTasks", finishedTasks)
-        outState.putBoolean("unfinishedTasks", unfinishedTasks)
     }
 }

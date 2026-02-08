@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.enums.SortCriteria
 import com.example.domain.interfaces.LocationService
 import com.example.domain.interfaces.NotesRepository
 import com.example.domain.interfaces.WeatherService
@@ -30,6 +31,9 @@ class TodayFragmentVM @Inject constructor(
     private val _calendarDate = MutableLiveData<String>()
     val calendarDate: LiveData<String> get() = _calendarDate
 
+    private val _sortCriteria = MutableLiveData<SortCriteria>()
+    val sortCriteria: LiveData<SortCriteria> get() = _sortCriteria
+
     private val _permissionConfirmationStatus = MutableLiveData<Boolean>()
     val permissionConfirmationStatus: LiveData<Boolean> get() = _permissionConfirmationStatus
 
@@ -53,6 +57,12 @@ class TodayFragmentVM @Inject constructor(
 
     fun setCalendarDate(calendarDate: String) {
         _calendarDate.value = calendarDate
+
+        setSortingCriteria(SortCriteria.DATE)
+    }
+
+    fun setSortingCriteria(sortCriteria: SortCriteria) {
+        _sortCriteria.value = sortCriteria
     }
 
     fun createNote(date: String, checkboxStatus: Boolean, text: String) {

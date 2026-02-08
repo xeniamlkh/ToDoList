@@ -11,6 +11,7 @@ import android.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.enums.SortCriteria
 import com.example.domain.models.Note
 import com.example.presentation.BaseFragment
 import com.example.presentation.R
@@ -21,23 +22,22 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val ARG_SORT_PARAM = "sortCriteria"
 private const val ARG_DATE_PARAM = "date"
-private const val ARG_BY_DATE_PARAM = "checkboxStatus"
-private const val ARG_FINISHED_FLAG_PARAM = "flag"
 
 @AndroidEntryPoint
 class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerViewItemClickListener {
 
     private val viewModel: NotesVM by activityViewModels()
 
+    private val sortCriteria: SortCriteria by lazy {
+        SortCriteria.valueOf(
+            requireArguments().getString(ARG_SORT_PARAM) ?: ""
+        )
+    }
+
     private val dateParam: String by lazy {
         requireArguments().getString(ARG_DATE_PARAM) ?: ""
-    }
-    private val byDate: Boolean by lazy {
-        requireArguments().getBoolean(ARG_BY_DATE_PARAM)
-    }
-    private val finished: Boolean by lazy {
-        requireArguments().getBoolean(ARG_FINISHED_FLAG_PARAM)
     }
 
     private lateinit var adapter: NotesAdapter
@@ -52,13 +52,15 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (byDate) {
-            viewModel.getListOfNotesByDate(dateParam)
-                .observe(this.viewLifecycleOwner) { notesList ->
-                    createUpdateRecyclerView(notesList)
-                }
-        } else {
-            if (finished) {
+        when (sortCriteria) {
+            SortCriteria.DATE -> {
+                viewModel.getListOfNotesByDate(dateParam)
+                    .observe(this.viewLifecycleOwner) { notesList ->
+                        createUpdateRecyclerView(notesList)
+                    }
+            }
+
+            SortCriteria.COMPLETED -> {
                 viewModel.showAllFinishedTasks().observe(this.viewLifecycleOwner) { notesList ->
                     createUpdateRecyclerView(notesList)
                     if (notesList.isNotEmpty()) {
@@ -67,7 +69,9 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
                         showSnackBar(R.string.no_finished_tasks)
                     }
                 }
-            } else {
+            }
+
+            SortCriteria.UNFINISHED -> {
                 viewModel.showAllUnfinishedTasks().observe(this.viewLifecycleOwner) { notesList ->
                     createUpdateRecyclerView(notesList)
                     if (notesList.isEmpty()) {
@@ -148,12 +152,14 @@ class NotesListFragment : BaseFragment<FragmentNotesListBinding>(), RecyclerView
     }
 
     companion object {
-        fun newInstance(dateParam: String, byDate: Boolean, finished: Boolean) =
+        fun newInstance(
+            sortCriteria: String,
+            date: String?
+        ) =
             NotesListFragment().apply {
                 arguments = bundleOf(
-                    ARG_DATE_PARAM to dateParam,
-                    ARG_BY_DATE_PARAM to byDate,
-                    ARG_FINISHED_FLAG_PARAM to finished
+                    ARG_SORT_PARAM to sortCriteria,
+                    ARG_DATE_PARAM to date
                 )
             }
     }
