@@ -18,7 +18,7 @@ minSdk = 27, targetSdk = 36. The To Do List app supports platform 8.1 (Oreo) and
 * Room
 * Google Mobile Services (GMS) Location API
 * Retrofit + JSON
-* Coroutines + Flow
+* Coroutines + Suspend functions + Flow + Scopes + Dispatchers
 * ViewModel + LiveData
 * Fragment Manager + Nested Fragments
 * ViewBinding
@@ -32,12 +32,15 @@ minSdk = 27, targetSdk = 36. The To Do List app supports platform 8.1 (Oreo) and
 * SavedInstanceState
 
 ## Detailed Description
-To Do List App’s function is to create **to-do notes** and track your functionality.
+The purpose of the To-Do List app is to create **to-do notes** and track your tasks.
 
-On the calendar, you can move back and forth, choose a date, and create a to-do note for that date. When you finish a task, you can mark a note with a check mark in the checkbox near the note.
-Additionally, you can display all unfinished tasks and mark them as finished, or display all finished tasks and delete them forever.
+On the calendar, you can move back and forth, select a date, and create a to-do note for that day. 
+When you complete a task, you can mark the note as finished by checking the checkbox next to it.
+Additionally, you can view all unfinished tasks and mark them as completed, or view all completed tasks and delete them permanently.
 
-Moreover, the app shows **today’s weather** in the top-right corner of the screen. Knowing the current weather can help you plan your activities for the day, and don't forget to bring an umbrella or use sunscreen. To see the weather, it is required to allow the app to use your **location**.
+Moreover, the app displays **today’s weather** in the top-right corner of the screen. 
+Knowing the current weather can help you plan your activities for the day, don’t forget to bring an umbrella or use sunscreen.
+To see the weather, you need to allow the app to access your **location**.
 
 * When the app starts for the first time, it shows a **permission request** for the user's current location.
   
