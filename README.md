@@ -13,6 +13,7 @@ minSdk = 27, targetSdk = 36. The To Do List app supports platform 8.1 (Oreo) and
 
 ## Technologies Used
 * Clean Architecture
+* Multi-module project
 * MVVM
 * Hilt
 * Room
