@@ -1,45 +1,35 @@
 # To Do List Application
 
 ## Description
-The To Do List App is the application that can create to-do notes and track a user's functionality. Additionally, it provides weather conditions based on the current location.
+The To Do List App is a task management app where you can create to-do notes and track your functionality.
 
 ## Key Features
-The To Do List Application contains the following functionality:
-1) Convenient note management
-2) Location-based real-time weather updates
-3) Tracking execution of the tasks
+The To-Do List app offers the following features: 
+1) convenient to-do management, 
+2) location-based real-time weather updates, 
+3) and task tracking.
 
-minSdk = 27, targetSdk = 34. The To Do List app supports platform 8.1 (Oreo) and above.
+minSdk = 27, targetSdk = 36. The To Do List app supports platform 8.1 (Oreo) and above.
 
 ## Technologies Used
-* Android Architecture: UI, Model
-* Room database
-* Repositories for a Room database and Network connection
-* Retrofit
-* Multiple Runtime Location Permissions request through Permission Launcher and register Activity for Result
-* Internet permission
-* Permission Rationale
-* Android Location Manager API
-* Openweathermap API key proper storing in a file that has been added to gitignore
-* ViewModel
-* LiveData
-* RecyclerView with click-action interfaces
-* View Bindings
+* Clean Architecture
+* MVVM
+* Hilt
+* Room
+* Google Mobile Services (GMS) Location API
+* Retrofit + JSON
+* Coroutines + Flow
+* ViewModel + LiveData
+* Fragment Manager + Nested Fragments
+* ViewBinding
+* Constraint + Linear Layout + Material Design 3 + Guidlines
+* Popup menu + Snackbar + AlertDialog Fragment + Progress bar
+* Night theme + styles + Landscape view
+* Runtime permissions
+* RecyclerView + DiffUtil
 * Date Picker
-* Fragment Manager for shifting between fragments
-* OnBackPressedDispatcher for handling the Back button events
-* Nested Fragments
-* SavedInstanceState for saving data through screen rotation
-* Popup menu
-* AlertDialog
-* Flow
-* Coroutines
-* Guidlines
-* Constraint Layout
-* Styles and Themes
-* Loading Progress Bar
-* Snackbars
-* Landscape view
+* OnBackPressedDispatcher
+* SavedInstanceState
 
 ## Detailed Description
 To Do List App’s function is to create **to-do notes** and track your functionality.
